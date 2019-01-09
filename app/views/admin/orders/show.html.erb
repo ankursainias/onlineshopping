@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<dl class="dl-horizontal">
+  <dt><strong>User:</strong></dt>
+  <dd><%= @order.user %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Order status:</strong></dt>
+  <dd><%= @order.order_status %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Expected delivery at:</strong></dt>
+  <dd><%= @order.expected_delivery_at %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Cancelled at:</strong></dt>
+  <dd><%= @order.cancelled_at %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Cart:</strong></dt>
+  <dd><%= @order.cart %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Delivery fee:</strong></dt>
+  <dd><%= @order.delivery_fee %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Sub total:</strong></dt>
+  <dd><%= @order.sub_total %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Discount total:</strong></dt>
+  <dd><%= @order.discount_total %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Grand total:</strong></dt>
+  <dd><%= @order.grand_total %></dd>
+</dl>
+
+<%= link_to 'Edit', edit_admin_order_path(@order), class: 'btn btn-default' %>
+<%= link_to 'Back', admin_orders_path, class: 'btn btn-default' %>

@@ -1,0 +1,328 @@
+<style type="text/css">
+  .max-700
+  {
+    max-width: 700px;
+    margin: 30px auto;
+    border: 1px solid #aaa;
+    padding: 30px;
+  }
+  .width-250
+  {
+    width: 250px;
+    display: inline-block;
+    margin: 0px !important;
+  }
+  .color_css{
+  color: red;
+  font-size: small;
+}
+</style>
+<%= render "/home/payment" %>
+    <div class="vertical-center-row col-md-12">
+    <div class="max-700">
+      <div class="py-5 text-left">
+        <h2>SECURE CHECKOUT</h2>
+      </div>
+      <div class="row">
+        <div class="col-md-12 order-md-1">
+          <!-- <h4 class="mb-3">Billing address</h4> -->
+          <form class="needs-validation" novalidate>
+            <div class="mb-3">
+              <label for="address">Address Line1</label>
+              <input type="text" class="form-control" id="line1" name="line1" placeholder="Main St" required>
+              <label id="address_line1_error" class="color_css"></label><br/>
+
+              <label for="address">Address Line2</label>
+              <input type="text" class="form-control" id="line2" name="line2" placeholder="Main St" required>
+              <label id="address_line2_error" class="color_css"></label><br/>
+              <label for="address">House No/Flat No.</label>
+              <input type="text" class="form-control" id="house_no" name="house_no" placeholder="1234" required>
+              <label id="address_house_no_error" class="color_css"></label><br/>
+              <div class="invalid-feedback">
+                Please enter your shipping address.
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-md-5 mb-3">
+                <label for="state">State</label>
+                <select class="custom-select d-block w-100" id="state" required>
+                  <option value="">Choose...</option>
+                  <option>Haryana</option>
+                  <option>Chandigarh</option>
+                  <option>Punjab</option>
+                </select>
+                 <label id="address_state_error" class="color_css"></label>
+              </div>
+               <div class="col-md-4 mb-3">
+                <label for="state">City</label>
+                <select class="custom-select d-block w-100" id="city" required>
+                  <option value="">Choose...</option>
+                  <option>Panchkula</option>
+                </select>
+                <label id="address_city_error" class="color_css"></label>
+              </div>
+              <div class="col-md-3 mb-3" style="margin-top: -31px;">
+                <label for="zip">Zip</label>
+                <input type="text" class="form-control" id="zip" placeholder="" required>
+                <label id="address_zipcode_error" class="color_css"></label>
+              </div>
+            </div>
+            <hr class="mb-4">
+            <div class="col-md-12 text-center">
+              <button class="width-250 btn btn-primary btn-lg btn-block" type="button" id="confirm_order">Confirm Order</button>&nbsp; &nbsp;
+              <button onclick= "location.href='/home';" class="width-250 btn btn-danger btn-lg btn-block" type="button">Go Back</button>
+          </div>
+          </form>
+        </div>
+      </div>
+  </div>
+</div>
+<br>
+<script type="text/javascript">
+  $(document).ready(function(){
+   $(document).on('click','#confirm_order',function(){
+    var line1 = $("#line1").val();
+    var line2 = $("#line2").val();
+    var house_no = $("#house_no").val();
+    var state = $("#state").val();
+    var city = $("#city").val();
+    var zipcode = $("#zip").val();
+    if (line1 == "") {$("#address_line1_error").text("This field required");} else {$("#address_line1_error").text("");}
+    if (line2 == "") {$("#address_line2_error").text("This field required");} else {$("#address_line2_error").text("");}
+    if (house_no == "") {$("#address_house_no_error").text("This field required");} else {$("#address_house_no_error").text("");}
+    if (state == "") {$("#address_state_error").text("This field required");} else {$("#address_state_error").text("");}
+    if (city == "") {$("#address_city_error").text("This field required");} else {$("#address_city_error").text("");}
+    if (zipcode == "") {$("#address_zipcode_error").text("This field required");} else {$("#address_zipcode_error").text("");}
+    if (line1 == "" || line2 == "" || house_no == "" || city == "" || state == "" || zipcode == "")
+        {
+          return false;
+        }
+        else
+        {
+          if (parseInt("<%= session[:grand_total]%>") > 0)
+          {$("#client-pay-modal").modal("show");}
+          else
+            { 
+              var formData = new FormData();
+              formData.append("pay_type", "Cash");
+                  var line1 = $("#line1").val();
+                  var line2 = $("#line2").val();
+                  var house_no = $("#house_no").val();
+                  var state = $("#state").val();
+                  var city = $("#city").val();
+                  var zipcode = $("#zip").val();
+              formData.append("delivery_address[line1]", line1);
+              formData.append("delivery_address[line2]", line2);
+              formData.append("delivery_address[house_no]", house_no);
+              formData.append("delivery_address[state]", state);
+              formData.append("delivery_address[city]", city);
+              formData.append("delivery_address[zipcode]", zipcode);
+
+              $.ajax({
+                    url: "/home/order_now",
+                    method: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false
+                 });
+
+             }
+        }
+   });
+   $(document).on('click','.place_order,.pay_via_cash',function(){
+    var formData = new FormData();
+    var payment_mode = $(this).attr("status");
+    formData.append("pay_type", payment_mode);
+    if (payment_mode == "Card")
+      {
+        var name = $("#card_holder").val();
+        var number = $("#card_number").val();
+        var cvc = $("#card_cvc").val();
+        var exp_month = $("#card_month").val();
+        var exp_year = $("#card_year").val();
+
+        if (name == "") {$("#card_holder_error").text("This field required");} else {$("#card_holder_error").text("");}
+        if (number == "") {$("#card_number_error").text("This field required"); } else {$("#card_holder_error").text("");}
+        if (cvc == "") {$("#card_cvc_error").text("This field required");} else {$("#card_holder_error").text("");}
+        if (exp_month == "") {$("#card_month_error").text("This field required");} else {$("#card_holder_error").text("");}
+        if (exp_year == "") {$("#card_year_error").text("This field required");} else {$("#card_holder_error").text("");}
+        if (name == "" || number == "" || cvc == "" || exp_month == "" || exp_year == "")
+        {
+          return false;
+        }
+        formData.append("card[name]", name);
+        formData.append("card[number]", number);
+        formData.append("card[cvc]", cvc);
+        formData.append("card[exp_month]", exp_month);
+        formData.append("card[exp_year]", exp_year);
+      }
+    $("#client-pay-modal").modal("hide");
+    var line1 = $("#line1").val();
+    var line2 = $("#line2").val();
+    var house_no = $("#house_no").val();
+    var state = $("#state").val();
+    var city = $("#city").val();
+    var zipcode = $("#zip").val();
+
+        formData.append("delivery_address[line1]", line1);
+        formData.append("delivery_address[line2]", line2);
+        formData.append("delivery_address[house_no]", house_no);
+        formData.append("delivery_address[state]", state);
+        formData.append("delivery_address[city]", city);
+        formData.append("delivery_address[postal_code]", zipcode);
+        formData.append("delivery_address[lat]", 30.687070);
+        formData.append("delivery_address[lng]", 76.850290);
+        $.ajax({
+            url: "/home/order_now",
+            method: "POST",
+            data: formData,
+            contentType: false,
+            processData: false  
+         });
+    });
+    });
+
+      function set_payment(){
+          var obj;
+             $.ajax({
+                    url: "/home/set_payment_params",
+                    method: "POST",
+                    success: function(response){
+                      console.log(response);
+                      debugger
+                      obj = response
+                    },
+                    error: function(response){
+                      alert("Error");
+                      obj = response
+                    }
+                 });
+        return obj     
+        }
+
+        paypal.Button.render({
+
+            env: 'sandbox', // sandbox | production
+
+            // PayPal Client IDs - replace with your own
+            // Create a PayPal app: https://developer.paypal.com/developer/applications/create
+            client: {
+                sandbox:    'AbxTNFfMfDWAwKM378b0AjsNxgusy-rwlKrThbYNH18Os52JpLOTaZq_bQODiIcg8GdhUTo4o5HeE7yF',
+                production: '<insert production client id>'
+            },
+
+            // Show the buyer a 'Pay Now' button in the checkout flow
+            commit: true,
+
+            // payment() is called when the button is clicked
+            // payment: function(data, actions) {
+
+            //     // Make a call to the REST api to create the payment
+            //     return actions.payment.create({
+            //         payment: {
+            //             transactions: [
+            //                 {
+            //                     amount: { total: '10', currency: 'USD' }
+            //                 }
+            //             ]
+            //         }
+            //     });
+            // },
+            // Set up a payment
+            payment: function(data, actions) {
+              var obj;
+             $.ajax({
+                    url: "/home/set_payment_params",
+                    method: "POST",
+                    success: function(response){
+                      console.log(response);
+                      debugger
+                      // obj = response;
+                      return actions.payment.create({
+                transactions: [{
+                  amount: {
+                    total: '<%= session[:grand_total]%>',
+                    currency: 'inr',
+                    details: {
+                      subtotal: '<%= session[:sub_total]%>',
+                      tax: '0.07',
+                      shipping: '0.03',
+                      handling_fee: '1.00',
+                      shipping_discount: '-1.00',
+                      insurance: '0.01'
+                    }
+                  },
+                  description: 'The payment transaction description.',
+                  custom: '90048630024435',
+                  //invoice_number: '12345', Insert a unique invoice number
+                  payment_options: {
+                    allowed_payment_method: 'INSTANT_FUNDING_SOURCE'
+                  },
+                  soft_descriptor: 'ECHI5786786',
+                  item_list: {
+                    items: [
+                    response
+                    // {
+                    //   name: 'hat',
+                    //   description: 'Brown hat.',
+                    //   quantity: '5',
+                    //   price: '3',
+                    //   tax: '0.01',
+                    //   sku: '1',
+                    //   currency: 'USD'
+                    // },
+                    // {
+                    //   name: 'handbag',
+                    //   description: 'Black handbag.',
+                    //   quantity: '1',
+                    //   price: '15',
+                    //   tax: '0.02',
+                    //   sku: 'product34',
+                    //   currency: 'USD'
+                    ],
+                    shipping_address: {
+                      recipient_name: 'Brian Robinson',
+                      line1: house_no.concat( " "+line1),
+                      line2: line2,
+                      city: city,
+                      country_code: 'IN',
+                      postal_code: zipcode,
+                      phone: '011862212345678',
+                      state: state
+                    }
+                  }
+                }],
+                note_to_payer: 'Contact us for any questions on your order.'
+              });
+                    },
+                    error: function(response){
+                      alert("Error");
+                      obj = response;
+                    }
+                 });
+               var response =  obj;
+               debugger
+                  var line1 = $("#line1").val();
+                  var line2 = $("#line2").val();
+                  var house_no = $("#house_no").val();
+                  var state = $("#state").val();
+                  var city = $("#city").val();
+                  var zipcode = $("#zip").val();
+                  
+              
+            },
+
+            // onAuthorize() is called when the buyer approves the payment
+            onAuthorize: function(data, actions) {
+
+                // Make a call to the REST api to execute the payment
+                return actions.payment.execute().then(function() {
+                    window.alert('Payment Complete!');
+                    window.location.href = "/home"
+                });
+            }
+
+        }, '#paypal-button-container');
+
+    </script>

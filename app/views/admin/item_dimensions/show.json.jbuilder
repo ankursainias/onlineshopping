@@ -1,0 +1,1 @@
+json.extract! @item_dimension, :item_id, :dimension_id, :price, :created_at, :updated_at

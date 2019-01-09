@@ -1,0 +1,1 @@
+json.extract! @coupon, :code, :description, :valid_from, :valid_until, :redemption_limit, :coupon_redemptions_count, :amount, :c_type, :created_at, :updated_at

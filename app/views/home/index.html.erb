@@ -1,0 +1,131 @@
+ <style type="text/css">
+   .thumbnail1 {
+    display: block;
+    padding: 4px;
+    margin-bottom: 20px;
+    line-height: 1.428571429;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    -webkit-transition: border 0.2s ease-in-out;
+    -o-transition: border 0.2s ease-in-out;
+    transition: border 0.2s ease-in-out;
+}
+#coupon_success{
+      color: green;
+    font-size: 121%;
+    font-style: italic;
+    font-family: initial;
+    text-align: left;
+    margin-bottom: -5px;
+    margin-top: auto;
+    margin-left: 15px;
+}
+}
+ </style>
+ <h2>Pizzas</h2>
+ <div class="col-md-8">
+  <div class="row text-center">
+    <% @v_pizzas.each do |pizza| %>
+    <div class="col-sm-4">
+      <div class="thumbnail1">
+        <img src="<%= pizza.picture.try(:image).present? ? pizza.picture.image.url(:medium) : '/assets/pizza1' %>" width="220" height="220">
+        <p><strong><%= pizza.name.titleize %></strong></p>
+        <p>
+          <% pizza.item_dimensions.each do |item_dimension|%>
+            <p><input class ="item_dimension_check" name="item_dimension" type="radio" value="<%= item_dimension.id %>" item-id="<%= pizza.id %>" />&nbsp;<%=item_dimension.dimension.size %>
+            <%=number_to_currency(item_dimension.price, unit: "\u20B9", separator: ",", delimiter: "") %>(Serve <%= item_dimension.dimension.serve %>)</p>
+          <%end%>
+        </p>
+        <p><button class="btn btn-danger add_to_cart disabled" item-id = "<%= pizza.id %>" >Add to Cart</button>
+      </div>
+    </div>
+
+      <%end%>
+    <% @nv_pizzas.each do |pizza| %>
+    <div class="col-sm-4">
+      <div class="thumbnail1">
+        <%#debugger%>
+        <img src="<%= pizza.picture.try(:image).present? ? pizza.picture.image.url(:medium) : '/assets/npizza6' %>" width="250" height="250">
+        <p><strong><%= pizza.name.titleize %></strong></p>
+        <p>
+          <% pizza.item_dimensions.each do |item_dimension|%>
+            <p><input class ="item_dimension_check" name="item_dimension" type="radio" value="<%= item_dimension.id %>" item-id="<%= pizza.id %>" />&nbsp;<%=item_dimension.dimension.size %>
+            <%=number_to_currency(item_dimension.price, unit: "\u20B9", separator: ",", delimiter: "") %>(Serve <%= item_dimension.dimension.serve %>)</p>
+          <%end%>
+        </p>
+        <p><button class="btn btn-danger add_to_cart disabled" item-id = "<%= pizza.id %>" >Add to Cart</button>
+      </div>
+    </div>
+
+      <%end%>
+    </div>
+  </div>
+<div class="col-md-4 cart_container">
+  <% if @cart.try(:cart_items).present? %>
+  <%= render "/layouts/partials/cart" %>
+  <%else%>
+    <div class="panel-heading">
+      <div class="panel-title">
+         <div class="row">
+            <div class="col-xs-6">
+               <h5><span class="glyphicon glyphicon-shopping-cart"></span> Your Cart</h5>
+            </div>
+         </div>
+      </div>
+   </div>
+    <p>Your cart looks a little empty, but it doesn't have to be! 
+      Why not checkout some of our unbeatable deals</p>
+  <%end%>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+     $(document).on('click','#apply_code',function(){
+         var coupon_code = $("#coupon_text").val();
+         var id = "<%= @cart.try(:id) %>"
+         $.ajax({
+          url: "/home/apply_coupon",
+          method: "POST",
+          data: {code: coupon_code,id: id },
+          error: function(error)
+          {
+            $("#coupon_success").text("");
+            $("#coupon_error").text(error.responseText);
+          }
+       });
+     });
+
+    $(document).on('click','.promotion-border',function(){
+      $('#myModal').modal('show');
+    });
+
+    $(document).on('click','.delete_btn',function(){
+      var cart_item_id = $(this).attr("cart-item-id");
+      $.ajax({
+          url: "/home/delete_cart_item",
+          method: "DELETE",
+          data: {id: cart_item_id }
+       });
+
+    });
+
+    $(document).on('click','.item_dimension_check',function(){
+       var check_val = $(this).attr("item-id");
+      $(".add_to_cart").addClass("disabled");
+      $("button[item-id="+check_val+"]").removeClass("disabled");
+    });
+
+    $(document).on('click','.add_to_cart',function(){
+      var item_id = $(this).attr("item-id");
+      var check_val = $('input[name=item_dimension]:checked').val();
+      // var check_val = $(this).attr("item-id");
+       $.ajax({
+          url: "/home/add_to_cart",
+          method: "POST",
+          data: {id: item_id,item_dimension_id: check_val }
+       });
+    });
+
+  });
+</script>

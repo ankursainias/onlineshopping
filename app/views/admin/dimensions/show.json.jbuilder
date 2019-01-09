@@ -1,0 +1,1 @@
+json.extract! @dimension, :size, :serve, :created_at, :updated_at

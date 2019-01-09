@@ -1,0 +1,25 @@
+<%= form_for([:admin, @dimension]) do |f| %>
+  <% if @dimension.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@dimension.errors.count, "error") %> prohibited this dimension from being saved:</h2>
+
+      <ul>
+      <% @dimension.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+      <%= f.label :size %><br>
+    <%= f.text_field :size %>
+    </div>
+  <div class="field">
+      <%= f.label :serve %><br>
+    <%= f.number_field :serve %>
+    </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

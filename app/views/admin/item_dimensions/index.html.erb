@@ -1,0 +1,31 @@
+<h1>Listing item_dimensions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Dimension</th>
+      <th>Price</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @item_dimensions.each do |item_dimension| %>
+      <tr>
+        <td><%= item_dimension.item %></td>
+        <td><%= item_dimension.dimension %></td>
+        <td><%= item_dimension.price %></td>
+        <td><%= link_to 'Show', [:admin, item_dimension] %></td>
+        <td><%= link_to 'Edit', edit_admin_item_dimension_path(item_dimension) %></td>
+        <td><%= link_to 'Destroy', [:admin, item_dimension], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Item dimension', new_admin_item_dimension_path %>

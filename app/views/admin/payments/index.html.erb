@@ -1,0 +1,45 @@
+<div class="page-header">
+  <h1>Listing payments</h1>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Order</th>
+      <th>Transaction</th>
+      <th>Pay time</th>
+      <th>Card</th>
+      <th>Failure message</th>
+      <th>Failure code</th>
+      <th>Gateway status</th>
+      <th>Captrued</th>
+      <th>Pay type</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @payments.each do |payment| %>
+      <tr>
+        <td><%= payment.order %></td>
+        <td><%= payment.transaction_id %></td>
+        <td><%= payment.pay_time %></td>
+        <td><%= payment.card %></td>
+        <td><%= payment.failure_message %></td>
+        <td><%= payment.failure_code %></td>
+        <td><%= payment.gateway_status %></td>
+        <td><%= payment.captrued %></td>
+        <td><%= payment.pay_type %></td>
+        <td><%= link_to 'Show', [:admin, payment], class: 'btn btn-default btn-xs' %></td>
+        <td><%= link_to 'Edit', edit_admin_payment_path(payment), class: 'btn btn-default btn-xs' %></td>
+        <td><%= link_to 'Destroy', [:admin, payment], method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-xs btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Payment', new_admin_payment_path, class: 'btn btn-primary' %>

@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Size:</strong>
+  <%= @dimension.size %>
+</p>
+
+<p>
+  <strong>Serve:</strong>
+  <%= @dimension.serve %>
+</p>
+
+<%= link_to 'Edit', edit_admin_dimension_path(@dimension) %> |
+<%= link_to 'Back', admin_dimensions_path %>

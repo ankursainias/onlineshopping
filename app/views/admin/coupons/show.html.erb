@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<dl class="dl-horizontal">
+  <dt><strong>Code:</strong></dt>
+  <dd><%= @coupon.code %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Description:</strong></dt>
+  <dd><%= @coupon.description %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Valid from:</strong></dt>
+  <dd><%= @coupon.valid_from %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Valid until:</strong></dt>
+  <dd><%= @coupon.valid_until %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Redemption limit:</strong></dt>
+  <dd><%= @coupon.redemption_limit %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Coupon redemptions count:</strong></dt>
+  <dd><%= @coupon.coupon_redemptions_count %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Amount:</strong></dt>
+  <dd><%= @coupon.amount %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Coupon type:</strong></dt>
+  <dd><%= @coupon.c_type %></dd>
+</dl>
+
+<%= link_to 'Edit', edit_admin_coupon_path(@coupon), class: 'btn btn-default' %>
+<%= link_to 'Back', admin_coupons_path, class: 'btn btn-default' %>

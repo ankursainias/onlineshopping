@@ -1,0 +1,12 @@
+<% if @final_cost.present? %>
+	<div class="col-xs-12">
+	  <h4 class="text-right">Total Discount <strong><%= number_to_currency(@final_cost[:discount], unit: "\u20B9", separator: ",", delimiter: "")%> </strong></h4>
+	</div>
+	<div class="col-xs-12">
+	  <h4 class="text-right">Grand Total <strong><%= number_to_currency(@final_cost[:total], unit: "\u20B9", separator: ",", delimiter: "")%> </strong></h4>
+	</div>
+	<%  set_grand_total(@final_cost,@cart) %>
+	<%else%>
+	<%  set_grand_total(@cart.total,@cart) %>
+<%end%>
+

@@ -1,0 +1,66 @@
+<%= form_for([:admin, @coupon], html: { class: 'form-horizontal coupon' }) do |f| %>
+  <% if @coupon.errors.any? %>
+    <div id="error_explanation" class="panel panel-danger">
+      <div class="panel-heading">
+        <h2 class="panel-title"><%= pluralize(@coupon.errors.count, "error") %> prohibited this coupon from being saved:</h2>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @coupon.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :code, class: 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.text_field :code, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :description, class: 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.text_field :description, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :valid_from, class: 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.date_select :valid_from, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :valid_until, class: 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.date_select :valid_until, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :redemption_limit, class: 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.number_field :redemption_limit, class: 'form-control' %>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label :amount, class: 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.text_field :amount, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :c_type, "Coupon Type", class: 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.select :c_type, [['Percentage','Percentage'], ['Amount','Amount']],class: 'form-control'%>
+      <%#= f.text_field :c_type, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+      <%= f.submit nil, class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<dl class="dl-horizontal">
+  <dt><strong>Order:</strong></dt>
+  <dd><%= @payment.order %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Transaction:</strong></dt>
+  <dd><%= @payment.transaction_id %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Pay time:</strong></dt>
+  <dd><%= @payment.pay_time %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Card:</strong></dt>
+  <dd><%= @payment.card %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Failure message:</strong></dt>
+  <dd><%= @payment.failure_message %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Failure code:</strong></dt>
+  <dd><%= @payment.failure_code %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Gateway status:</strong></dt>
+  <dd><%= @payment.gateway_status %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Captrued:</strong></dt>
+  <dd><%= @payment.captrued %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Pay type:</strong></dt>
+  <dd><%= @payment.pay_type %></dd>
+</dl>
+
+<%= link_to 'Edit', edit_admin_payment_path(@payment), class: 'btn btn-default' %>
+<%= link_to 'Back', admin_payments_path, class: 'btn btn-default' %>

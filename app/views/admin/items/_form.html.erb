@@ -1,0 +1,28 @@
+<%= form_for([:admin, @item]) do |f| %>
+  <% if @item.errors.any? %>
+    <div id="error_explanation">
+      <ul>
+      <% @item.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+      <%= f.label :name %><br>
+    <%= f.text_field :name, required: true %>
+    </div>
+     <div class="field">
+      <%= f.label :image %><br>
+    <%= f.file_field :image, required: true %>
+    </div>
+
+  <div class="field">
+      <%= f.label :veg %><br>
+    <%= f.check_box :veg %>
+    </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

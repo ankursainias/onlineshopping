@@ -1,0 +1,5 @@
+$('#myModal').modal('hide');
+$(".modal-backdrop.in").css("opacity","0");
+$('#render_final_cost').html("<%= escape_javascript render :partial => 'layouts/partials/final_cost',locals: {adverts: @cart} %>");
+$("#coupon_success").text("Promo applied successfully");
+$("#coupon_error").text("");

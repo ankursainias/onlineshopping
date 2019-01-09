@@ -1,0 +1,43 @@
+<div class="page-header">
+  <h1>Listing coupons</h1>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Code</th>
+      <th>Description</th>
+      <th>Valid from</th>
+      <th>Valid until</th>
+      <th>Redemption limit</th>
+      <th>Coupon redemptions count</th>
+      <th>Amount</th>
+      <th>Coupon Type</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @coupons.each do |coupon| %>
+      <tr>
+        <td><%= coupon.code %></td>
+        <td><%= coupon.description %></td>
+        <td><%= coupon.valid_from %></td>
+        <td><%= coupon.valid_until %></td>
+        <td><%= coupon.redemption_limit %></td>
+        <td><%= coupon.coupon_redemptions_count %></td>
+        <td><%= coupon.amount %></td>
+        <td><%= coupon.c_type %></td>
+        <td><%= link_to 'Show', [:admin, coupon], class: 'btn btn-default btn-xs' %></td>
+        <td><%= link_to 'Edit', edit_admin_coupon_path(coupon), class: 'btn btn-default btn-xs' %></td>
+        <td><%= link_to 'Destroy', [:admin, coupon], method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-xs btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Coupon', new_admin_coupon_path, class: 'btn btn-primary' %>

@@ -1,0 +1,2 @@
+module Admin::ItemDimensionsHelper
+end

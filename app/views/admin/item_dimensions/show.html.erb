@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Item:</strong>
+  <%= @item_dimension.item %>
+</p>
+
+<p>
+  <strong>Dimension:</strong>
+  <%= @item_dimension.dimension %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @item_dimension.price %>
+</p>
+
+<%= link_to 'Edit', edit_admin_item_dimension_path(@item_dimension) %> |
+<%= link_to 'Back', admin_item_dimensions_path %>

@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  session_id: MyString
+  line1: MyString
+  line2: MyString
+  house_no: MyString
+  city: MyString
+  postal_code: 1
+  lat: 9.99
+  lng: 9.99
+  other: MyString
+  is_default: false
+
+two:
+  user: two
+  session_id: MyString
+  line1: MyString
+  line2: MyString
+  house_no: MyString
+  city: MyString
+  postal_code: 1
+  lat: 9.99
+  lng: 9.99
+  other: MyString
+  is_default: false

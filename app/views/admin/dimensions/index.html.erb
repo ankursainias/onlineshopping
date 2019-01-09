@@ -1,0 +1,29 @@
+<h1>Listing dimensions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Size</th>
+      <th>Serve</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @dimensions.each do |dimension| %>
+      <tr>
+        <td><%= dimension.size %></td>
+        <td><%= dimension.serve %></td>
+        <td><%= link_to 'Show', [:admin, dimension] %></td>
+        <td><%= link_to 'Edit', edit_admin_dimension_path(dimension) %></td>
+        <td><%= link_to 'Destroy', [:admin, dimension], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Dimension', new_admin_dimension_path %>

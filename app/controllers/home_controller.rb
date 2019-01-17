@@ -4,42 +4,48 @@ class HomeController < ApplicationController
 	before_action :set_cart, only: [:apply_coupon]
 
 
-  # def testing
-  #   require 'paypal-sdk-rest'
-  #     # include PayPal::SDK::REST
+  def testing
+    begin
+      require 'paypal-sdk-rest'
+      # include PayPal::SDK::REST
+      PayPal::SDK::REST.set_config(
+        :mode => "sandbox", # "sandbox" or "live"
+        :client_id => "AcPm6wWjofEjPmHVVxFHGZBvQoLsyAYdSZ6ljSAlBywIziQmhhivBHrvJzG5jXQZMpoXmZRT3JhdkiOk",
+        # :client_id => "AbxTNFfMfDWAwKM378b0AjsNxgusy-rwlKrThbYNH18Os52JpLOTaZq_bQODiIcg8GdhUTo4o5HeE7yF",
+        # :client_secret => "EAzlb8WFOP3RRPmXwWkkeC7bFh__4vuLwnHDToTp9FdUn4QvFjy8-O8biAcIiWlD3Ae8RDnQldFhtme_") :client_id => "AbxTNFfMfDWAwKM378b0AjsNxgusy-rwlKrThbYNH18Os52JpLOTaZq_bQODiIcg8GdhUTo4o5HeE7yF",
+        :client_secret => "EDo3bZ7UXXd6DZ-VpbsjYXECQp4g2OcQPEn2KXDMT7qkTt6SPT-Xps6FEgD0LhlGvr0fzZpQgxy-2tI7")
 
-  #     PayPal::SDK::REST.set_config(
-  #       :mode => "sandbox", # "sandbox" or "live"
-  #       :client_id => "AbxTNFfMfDWAwKM378b0AjsNxgusy-rwlKrThbYNH18Os52JpLOTaZq_bQODiIcg8GdhUTo4o5HeE7yF",
-  #       :client_secret => "EAzlb8WFOP3RRPmXwWkkeC7bFh__4vuLwnHDToTp9FdUn4QvFjy8-O8biAcIiWlD3Ae8RDnQldFhtme_")
-
-  #     # Build Payment object
-  #     @payment = PayPal::SDK::REST::Payment.new({
-  #       :intent =>  "sale",
-  #       :payer =>  {
-  #         :payment_method =>  "paypal" },
-  #       :redirect_urls => {
-  #         :return_url => "http://localhost:3000/home",
-  #         :cancel_url => "http://localhost:3000/home/checkout" },
-  #       :transactions =>  [{
-  #         :item_list => {
-  #           :items => [{
-  #             :name => "item",
-  #             :sku => "item",
-  #             :price => "5",
-  #             :currency => "USD",
-  #             :quantity => 1 }]},
-  #         :amount =>  {
-  #           :total =>  "5",
-  #           :currency =>  "USD" },
-  #         :description =>  "This is the payment transaction description." }]})
-
-  #     if @payment.create
-  #       @payment.id     # Payment Id
-  #     else
-  #       @payment.error  # Error Hash
-  #     end
-  # end
+      # Build Payment object
+      @payment = PayPal::SDK::REST::Payment.new({
+        :rm => 2,
+        :intent =>  "sale",
+        :payer =>  {
+          :payment_method =>  "paypal" },
+        :redirect_urls => {
+          :return_url => "http://localhost:3000/home/paypal_return",
+          :cancel_url => "http://localhost:3000/home/checkout" },
+        :transactions =>  [{
+          :item_list => {
+            :items => [{
+              :name => "item",
+              :sku => "item",
+              :price => "11",
+              :currency => "USD",
+              :quantity => 1 }]},
+          :amount =>  {
+            :total =>  "11",
+            :currency =>  "USD" },
+          :description =>  "This is the payment transaction description." }]})
+      @payment.create!
+      Order.second.build_payment(transaction_id: @payment.id,pay_time: Time.now, gateway_status: "succeeded",pay_type: "paypal").save!
+      # "PAY-425999139T568793XLQ7NZFQ"
+      # Payment.create!(transaction_id: @payment)
+      redirect_to @payment.links.find{|v| v.rel == "approval_url" }.href
+    rescue PayPal::SDK::Core::Exceptions::UnsuccessfulApiCall => e
+      redirect_to home_index_path, alert: e.message
+    end
+    
+  end
   def index
   	@v_pizzas = Item.veg_pizzas
   	@nv_pizzas = Item.non_veg_pizzas
@@ -48,6 +54,26 @@ class HomeController < ApplicationController
  	else
   		@cart = Cart.find_by(session_id: session[:session_id], purchased: false)
   	end
+  end
+
+  def paypal_return
+      # Get payment id from query string following redirect
+        payment = PayPal::SDK::REST::Payment.find(params[:paymentId])
+
+        # Execute payment using payer_id obtained from query string following redirect
+        if payment.execute( :payer_id => params[:PayerID] )
+          logger.info "authorization executed successfully"
+          # Capture auth id
+          auth_id = payment.transactions[0].related_resources[0].authorization.id;
+        else
+          logger.error payment.error.inspect
+        end
+
+    @payment = Payment.find_by(transaction_id: params[:paymentId])
+    @payment.payer_id = params[:PayerID]
+    @payment.token = params[:token]
+    @payment.save!
+    redirect_to home_index_path
   end
 
   def paypal_notify
@@ -70,14 +96,14 @@ class HomeController < ApplicationController
        address.user_id = user_signed_in? ? current_user.id : nil 
        address.save!
        order_params = {}
-       order_params[:order_status_id] = placed_id = OrderStatus.find_by(status: "PLACED").id
+       order_params[:order_status_id] = OrderStatus.find_by(status: "PLACED").id
        order_params[:cart_id] = params[:invoice]
        order_params[:grand_total] = params[:payment_gross]
        order_params[:discount_total] = session[:discount]
        order_params[:sub_total] = session[:sub_total]
        order_params[:delivery_address_id] = address.id
        order_params[:delivery_fee] = 0
-       order_params[:expected_delivery_at] = Time.now + 45.minutes
+       order_params[:expected_delivery_at] = Time.now + 30.minutes
        order_params[:user_id] = user_signed_in? ? current_user.id : nil
       @current_order = Order.new(order_params)
       payment_params = {}
@@ -100,11 +126,22 @@ class HomeController < ApplicationController
 
   		 if user_signed_in?
   			@cart = Cart.find_or_create_by!(user_id: current_user.id, purchased: false,user_id: current_user.id)
-  			@cart_item = @cart.cart_items.create!(item_id: item.id,quantity: 1,user_id: current_user.id,item_dimension_id: params[:item_dimension_id])
-  		else
+        @cart_item =  @cart.cart_items.find_by(item_id: item.id,user_id: current_user.id,item_dimension_id: params[:item_dimension_id])
+        if @cart_item.present?
+            @cart_item.update(quantity: @cart_item.quantity + 1)
+          else
+            @cart_item = @cart.cart_items.create(quantity: 1, item_id: item.id,item_dimension_id: params[:item_dimension_id],user_id: current_user.id)
+          end
+
+      else
   			@cart = Cart.find_or_create_by!(session_id: session[:session_id], purchased: false)
-  			@cart_item = @cart.cart_items.create!(item_id: item.id,quantity: 1,item_dimension_id: params[:item_dimension_id])
-  		end
+          @cart_item =  @cart.cart_items.find_by(item_id: item.id,item_dimension_id: params[:item_dimension_id])
+          if @cart_item.present?
+            @cart_item.update(quantity: @cart_item.quantity + 1)
+          else
+            @cart_item = @cart.cart_items.create(quantity: 1, item_id: item.id,item_dimension_id: params[:item_dimension_id])
+          end
+      end
   		respond_to do |format|
   			format.js
   		end
@@ -163,7 +200,7 @@ class HomeController < ApplicationController
        order_params[:sub_total] = session[:sub_total]
        order_params[:delivery_address_id] = address.id
        order_params[:delivery_fee] = 0
-       order_params[:expected_delivery_at] = Time.now + 45.minutes
+       order_params[:expected_delivery_at] = Time.now + 30.minutes
        order_params[:user_id] = user_signed_in? ? current_user.id : nil
       @current_order = Order.new(order_params)
       @current_order.save!

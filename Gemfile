@@ -17,7 +17,9 @@ gem 'sass-rails', '~> 5.0'
 gem "font-awesome-rails"
 gem 'date_validator', '~> 0.9.0'
 gem 'stripe'
-# gem 'paypal-sdk-rest'
+gem 'geokit-rails'
+gem 'toastr-rails'
+gem 'paypal-sdk-rest'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
@@ -38,7 +40,7 @@ gem 'rails-admin-scaffold'
 # gem 'mini_magick', '~> 4.8'
 
 # Use Capistrano for deployment
-gem 'capistrano'
+# gem 'capistrano'
 # gem 'capistrano-rails', group: :development
 
 # Reduces boot times through caching; required in config/boot.rb
@@ -57,6 +59,16 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
+
+gem 'capistrano', '~> 3.7', '>= 3.7.1'
+gem 'capistrano-rails', '~> 1.2'
+gem 'capistrano-passenger', '~> 0.2.0'
+
+# Add this if you're using rbenv
+# gem 'capistrano-rbenv', '~> 2.1'
+
+# Add this if you're using rvm
+# gem 'capistrano-rvm'
 
 group :test do
   # Adds support for Capybara system testing and selenium driver

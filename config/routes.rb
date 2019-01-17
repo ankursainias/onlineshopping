@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       get 'paypal_checkout'
       post 'set_payment_params'
       get 'testing'
+      get 'paypal_return'
       post 'paypal_notify'
     end
    end

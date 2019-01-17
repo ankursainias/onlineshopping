@@ -9,7 +9,7 @@ class User < ApplicationRecord
 
   has_many :carts, dependent: :destroy
   has_many :cart_items, dependent: :destroy
-  has_many :orders, dependent: :destroy
+  has_many :orders, -> { order "created_at DESC" }, dependent: :destroy
   has_many :coupon_redemptions, dependent: :destroy
   has_many :delivery_addresses, dependent: :destroy
   

@@ -31,7 +31,7 @@
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
 
-
+server  '13.127.243.91', user: 'deploy', roles: %w{app db web}
 
 # Custom SSH Options
 # ==================

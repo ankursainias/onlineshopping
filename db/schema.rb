@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_08_112101) do
+ActiveRecord::Schema.define(version: 2019_01_16_072004) do
 
   create_table "brand_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "brand_id"
@@ -176,6 +176,8 @@ ActiveRecord::Schema.define(version: 2019_01_08_112101) do
     t.datetime "updated_at", null: false
     t.float "fee", default: 0.0
     t.string "currency", default: "INR"
+    t.string "payer_id"
+    t.string "token"
     t.index ["card_id"], name: "index_payments_on_card_id"
     t.index ["order_id"], name: "index_payments_on_order_id"
   end

@@ -1,0 +1,39 @@
+<div class="page-header">
+  <h1>Listing Open Hours</h1>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Store</th>
+      <th>Day</th>
+      <th>Open</th>
+      <th>Close</th>
+      <th>Valid from</th>
+      <th>Valid through</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @open_hours.each do |open_hour| %>
+      <tr>
+        <td><%= open_hour.store.name %></td>
+        <td><%= open_hour.day %></td>
+        <td><%= open_hour.open.strftime("%I:%M%p") %></td>
+        <td><%= open_hour.close.strftime("%I:%M%p") %></td>
+        <td><%= open_hour.valid_from.in_time_zone("New Delhi").strftime("%m/%d/%Y") %></td>
+        <td><%= open_hour.valid_through.in_time_zone("New Delhi").strftime("%m/%d/%Y") %></td>
+        <td><%= link_to 'Show', [:admin, open_hour], class: 'btn btn-default btn-xs' %></td>
+        <td><%= link_to 'Edit', edit_admin_open_hour_path(open_hour), class: 'btn btn-default btn-xs' %></td>
+        <td><%= link_to 'Destroy', [:admin, open_hour], method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-xs btn-danger' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Open hour', new_admin_open_hour_path, class: 'btn btn-primary' %>

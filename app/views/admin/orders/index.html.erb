@@ -7,33 +7,30 @@
     <tr>
       <th>User</th>
       <th>Order status</th>
-      <th>Expected delivery at</th>
+      <th>Created at</th>
       <th>Cancelled at</th>
-      <th>Cart</th>
       <th>Delivery fee</th>
       <th>Sub total</th>
       <th>Discount total</th>
       <th>Grand total</th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <th>Action</th>
     </tr>
   </thead>
 
   <tbody>
+    <% rate = get_rate("INR","GBP") %>
     <% @orders.each do |order| %>
       <tr>
-        <td><%= order.user %></td>
-        <td><%= order.order_status %></td>
-        <td><%= order.expected_delivery_at %></td>
+        <td><%= order.user.try(:email).present? ? order.user.try(:email) : "Guest User" %></td>
+        <td><%= order.order_status.status %></td>
+        <td><%= order.created_at.in_time_zone("New Delhi") %></td>
         <td><%= order.cancelled_at %></td>
-        <td><%= order.cart %></td>
-        <td><%= order.delivery_fee %></td>
-        <td><%= order.sub_total %></td>
-        <td><%= order.discount_total %></td>
-        <td><%= order.grand_total %></td>
-        <td><%= link_to 'Show', [:admin, order], class: 'btn btn-default btn-xs' %></td>
-        <td><%= link_to 'Edit', edit_admin_order_path(order), class: 'btn btn-default btn-xs' %></td>
+        <% cache do %>
+        <td><%= number_to_currency(order.delivery_fee*rate, :unit => "£")  %></td>
+        <td><%= number_to_currency(order.sub_total*rate, :unit => "£") %></td>
+        <td><%= number_to_currency(order.discount_total*rate, :unit => "£") %></td>
+        <td><%= number_to_currency(order.grand_total*rate, :unit => "£") %></td>
+        <%end%>
         <td><%= link_to 'Destroy', [:admin, order], method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-xs btn-danger' %></td>
       </tr>
     <% end %>
@@ -42,4 +39,4 @@
 
 <br>
 
-<%= link_to 'New Order', new_admin_order_path, class: 'btn btn-primary' %>
+<%#= link_to 'New Order', new_admin_order_path, class: 'btn btn-primary' %>

@@ -42,7 +42,7 @@
 
 
 set :application, "onlineshopping"
-set :repo_url, "https://github.com/ankursainias/onlineshopping.git"
+set :repo_url, "git@github.com:ankursainias/onlineshopping.git"
 
 set :deploy_to, '/home/deploy/onlineshopping'
 
@@ -50,17 +50,17 @@ append :linked_files, "config/database.yml", "config/secrets.yml"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor/bundle", "public/system", "public/uploads"
 
 server  '13.127.243.91', user: 'deploy', roles: %w{app db web}
-set :user, "deploy"
+# set :user, "deploy"
 
-set :recipient, "Ruby"
-task :hello do
-	puts "Hello #{fetch(:recipient)}"
-end
+# set :recipient, "Ruby"
+# task :hello do
+# 	puts "Hello #{fetch(:recipient)}"
+# end
 
-task :goodbye do
-	puts "Good #{fetch(:recipient)}"
-end
+# task :goodbye do
+# 	puts "Good #{fetch(:recipient)}"
+# end
 
-after :hello, :goodbye
+# after :hello, :goodbye
 
 

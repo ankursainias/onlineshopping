@@ -1,0 +1,58 @@
+<%= form_for([:admin, @open_hour], html: { class: 'form-horizontal open_hour' }) do |f| %>
+  <% if @open_hour.errors.any? %>
+    <div id="error_explanation" class="panel panel-danger">
+      <div class="panel-heading">
+        <h2 class="panel-title"><%= pluralize(@open_hour.errors.count, "error") %> prohibited this open_hour from being saved:</h2>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @open_hour.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :store_id, class: 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.text_field :store_id, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :day, class: 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.number_field :day, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :open, class: 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.time_select :open, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :close, class: 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.time_select :close, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :valid_from, class: 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.datetime_select :valid_from, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :valid_through, class: 'control-label col-md-2' %>
+    <div class="col-md-10">
+      <%= f.datetime_select :valid_through, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+      <%= f.submit nil, class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

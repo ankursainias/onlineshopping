@@ -1,0 +1,1 @@
+fixtures/rails5_api/test/functional/../../../../test/integration/rails5/users_controller_test.rb

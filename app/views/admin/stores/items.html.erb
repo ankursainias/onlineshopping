@@ -1,0 +1,29 @@
+<h1>Listing items</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Out of Stock</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @store_items.each do |item| %>
+      <tr>
+        <td><%= item.name %></td>
+        <td><%= item.store_items.first.out_of_stock ? "Yes" : "No" %></td>
+        <td>
+        	<%if item.store_items.first.out_of_stock %>
+       		 	<%=link_to 'Mark As In Of Stock', admin_item_stock_path(item.store_items.first) %>
+       		 <%else%>
+        	<%=link_to 'Mark As Out Of Stock', admin_item_stock_path(item.store_items.first) %>
+        	<%end%>
+        	</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

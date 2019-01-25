@@ -1,0 +1,3 @@
+current directory: /Users/ankur/Documents/OnlineShopping/vendor/bundle/gems/nokogiri-1.10.1/ext/nokogiri
+/Users/ankur/.rvm/rubies/ruby-2.5.3/bin/ruby -r ./siteconf20190117-18509-28i1vf.rb extconf.rb
+undefined method `success?' for nil:NilClass

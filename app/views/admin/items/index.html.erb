@@ -4,7 +4,7 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Veg</th>
+      <!-- <th>Veg</th> -->
       <th>Action</th>
     </tr>
   </thead>
@@ -13,8 +13,8 @@
     <% @items.each do |item| %>
       <tr>
         <td><%= item.name %></td>
-        <td><%= item.veg  ? 'Yes' : 'No'  %></td>
-        <td><%= link_to 'Show', [:admin, item] %>
+        <!-- <td><%#= item.veg  ? 'Yes' : 'No'  %></td> -->
+        <td><%#= link_to 'Show', [:admin, item] %>
         <%= link_to 'Edit', edit_admin_item_path(item) %>
         <%= link_to 'Destroy', [:admin, item], method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

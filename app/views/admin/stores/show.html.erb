@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<dl class="dl-horizontal">
+  <dt><strong>Name:</strong></dt>
+  <dd><%= @store.name %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Address:</strong></dt>
+  <dd><%= @store.address %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Postal code:</strong></dt>
+  <dd><%= @store.postal_code %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>City:</strong></dt>
+  <dd><%= @store.city %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Phone:</strong></dt>
+  <dd><%= @store.phone %></dd>
+</dl>
+
+<%= link_to 'Edit', edit_admin_store_path(@store), class: 'btn btn-default' %>
+<%= link_to 'Back', admin_stores_path, class: 'btn btn-default' %>

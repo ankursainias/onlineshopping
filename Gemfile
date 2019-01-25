@@ -13,15 +13,34 @@ gem "paperclip", "~> 6.0.0"
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
 gem 'bootstrap-sass', '~> 3.4.0'
+
 gem 'sass-rails', '~> 5.0'
+
 gem "font-awesome-rails"
+
 gem 'date_validator', '~> 0.9.0'
+
 gem 'stripe'
+
 gem 'geokit-rails'
+
 gem 'toastr-rails'
+
 gem 'paypal-sdk-rest'
+
+gem 'geokit', '~> 1.13', '>= 1.13.1'
+
+gem 'concurrency'
+
+gem 'sunspot_rails'
+gem 'sunspot_solr' # optional pre-packaged Solr distribution for use in development. Please find a section below explaining other options for running Solr in production
+gem 'progress_bar', '~> 1.0', '>= 1.0.5'
+## Gemfile for Rails 3+, Sinatra, and Merb
+gem 'will_paginate', '~> 3.1.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
+
+gem 'simple_token_authentication', '~> 1.0' # see semver.org
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'mini_racer', platforms: :ruby
 gem 'devise'
@@ -38,6 +57,10 @@ gem 'jbuilder', '~> 2.5'
 gem 'rails-admin-scaffold'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
+# Gemfile
+gem 'rabl'
+# Also add either `oj` or `yajl-ruby` as the JSON parser
+gem 'oj'
 
 # Use Capistrano for deployment
 # gem 'capistrano'
@@ -59,7 +82,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
-
+gem 'unicorn'
 gem 'capistrano', '~> 3.7', '>= 3.7.1'
 gem 'capistrano-rails', '~> 1.2'
 gem 'capistrano-passenger', '~> 0.2.0'

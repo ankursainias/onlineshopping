@@ -7,6 +7,8 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnZHCNVuYH8lZSMZtuHzJ4677eUi6AE8w&libraries=places&callback=initAutocomplete" async defer></script>
+     <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKQX3cyZ7pVKmBwE8wiowivW9qH62AVk8&libraries=places&callback=initAutocomplete" async defer></script> -->
     <!-- <script src="https://www.paypalobjects.com/api/checkout.js"></script> -->
   </head>
 
@@ -18,7 +20,7 @@
       <%= link_to('Login', new_user_session_path)  %>  
       <%end%>
       <%= render 'layouts/partials/notice_and_alerts'%>
-      <div class="fluid-container col-md-12" >
+      <div class="fluid-container col-md-12" style="top: -64px;" >
         <% unless params[:controller] == "home"%>
           <a href="/" class="btn btn-primary">Home</a>
        <%end%>

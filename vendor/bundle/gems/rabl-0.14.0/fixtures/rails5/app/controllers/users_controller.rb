@@ -1,0 +1,1 @@
+fixtures/rails5/app/controllers/../../../ashared/controllers_rails_5/users_controller.rb

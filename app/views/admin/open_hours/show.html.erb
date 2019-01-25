@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<dl class="dl-horizontal">
+  <dt><strong>Store:</strong></dt>
+  <dd><%= @open_hour.store.name %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Day:</strong></dt>
+  <dd><%= Date::DAYNAMES[ @open_hour.day] %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Open:</strong></dt>
+  <dd><%= @open_hour.open.strftime("%I:%M%p") %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Close:</strong></dt>
+  <dd><%= @open_hour.close.strftime("%I:%M%p") %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Valid from:</strong></dt>
+  <dd><%= @open_hour.valid_from.in_time_zone("New Delhi").strftime("%m/%d/%Y")  %></dd>
+</dl>
+
+<dl class="dl-horizontal">
+  <dt><strong>Valid through:</strong></dt>
+  <dd><%= @open_hour.valid_through.in_time_zone("New Delhi").strftime("%m/%d/%Y")  %></dd>
+</dl>
+
+<%= link_to 'Edit', edit_admin_open_hour_path(@open_hour), class: 'btn btn-default' %>
+<%= link_to 'Back', admin_open_hours_path, class: 'btn btn-default' %>

@@ -17,6 +17,12 @@ class Admin::ItemsController < ApplicationController
     @item = Item.new
   end
 
+  def stock
+    st = StoreItem.find(params[:item_id])
+    st.update(out_of_stock: !st.out_of_stock)
+    redirect_to admin_store_items_path(st.store_id)
+  end
+
   # GET /admin/items/1/edit
   def edit
   end

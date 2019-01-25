@@ -1,0 +1,1 @@
+json.extract! @open_hour, :store_id, :day, :open, :close, :valid_from, :valid_through, :created_at, :updated_at

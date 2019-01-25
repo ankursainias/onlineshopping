@@ -1,10 +1,55 @@
+require 'constraints/web_constraint'
+require 'constraints/api_constraint'
 Rails.application.routes.draw do
-  
-  namespace :admin do
-    resources :payments
+  # API routes 
+  namespace :api, defaults: { format: :json } do
+    scope module: :v1, constraints: ApiConstraint.new(version: 1, default: true) do
+          resources :stores, only: [:index] do
+            get 'items'
+            collection do 
+              get 'categories'
+              get 'customization'
+            end
+          end
+          resources :testing, only: [] do
+            collection do
+              post "create_order"
+              get "since_orders"
+              get "deliveries"
+              get "deliveries_order_for_kitchen"
+            end
+            member do
+              get "order"
+              put "order_update"
+              get "last_mile_data"
+            end
+          end
+          resources :users, only: [] do
+            collection do
+              post 'login'
+              delete 'logout'
+              get 'session_testing'
+            end
+          end
+          resources :home,path: '', only: [] do
+            collection do 
+                post "add_to_cart"
+                get "items"
+            end
+          end
+    end
   end
+  # Admin routes
   namespace :admin do
-    resources :items,:brands,:categories,:brand_categories,:dimensions, :coupons, :orders
+    resources :brands,:categories,:brand_categories,:dimensions,
+              :coupons, :orders,:items,:payments,:open_hours,
+              :toppings,:ingredients
+    resources :stores do
+       get 'items'
+    end
+    resources :items do 
+      get 'stock'
+    end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 	

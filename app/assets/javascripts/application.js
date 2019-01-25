@@ -15,3 +15,35 @@
 //= require rails-ujs
 //= require activestorage
 //= require_tree .
+
+
+var placeSearch, autocomplete, geocoder;
+
+function initAutocomplete() {
+  geocoder = new google.maps.Geocoder();
+  autocomplete = new google.maps.places.Autocomplete(
+      (document.getElementById('store_address'))/*,
+      {types: ['(cities)']}*/);
+
+  autocomplete.addListener('place_changed', fillInAddress);
+}
+
+function codeAddress(address) {
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      if (status == 'OK') {
+      	debugger
+      	var latitude = results[0].geometry.location.lat();
+      	var longitude = results[0].geometry.location.lng();
+      	document.getElementById('store_lat').value = latitude;
+      	document.getElementById('store_lng').value = longitude;
+        // alert(results[0].geometry.location);
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }
+function fillInAddress() {
+  var place = autocomplete.getPlace();
+
+  codeAddress(document.getElementById('store_address').value);
+}

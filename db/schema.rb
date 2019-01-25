@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_16_072004) do
+ActiveRecord::Schema.define(version: 2019_01_25_124744) do
 
   create_table "brand_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "brand_id"
@@ -120,6 +120,13 @@ ActiveRecord::Schema.define(version: 2019_01_16_072004) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "ingredients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "item_dimensions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "item_id"
     t.integer "dimension_id"
@@ -132,9 +139,22 @@ ActiveRecord::Schema.define(version: 2019_01_16_072004) do
 
   create_table "items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
-    t.boolean "veg", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "category_id"
+    t.index ["category_id"], name: "index_items_on_category_id"
+  end
+
+  create_table "open_hours", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "store_id"
+    t.integer "day"
+    t.time "close"
+    t.time "open"
+    t.datetime "valid_from"
+    t.datetime "valid_through"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["store_id"], name: "index_open_hours_on_store_id"
   end
 
   create_table "order_statuses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -194,6 +214,37 @@ ActiveRecord::Schema.define(version: 2019_01_16_072004) do
     t.index ["imageable_type", "imageable_id"], name: "index_pictures_on_imageable_type_and_imageable_id"
   end
 
+  create_table "store_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "store_id"
+    t.bigint "item_id"
+    t.boolean "out_of_stock", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_store_items_on_item_id"
+    t.index ["store_id"], name: "index_store_items_on_store_id"
+  end
+
+  create_table "stores", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.string "address"
+    t.string "postal_code"
+    t.string "city"
+    t.string "phone"
+    t.decimal "lat", precision: 10, scale: 6
+    t.decimal "lng", precision: 10, scale: 6
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "store_items_count", default: 0
+  end
+
+  create_table "toppings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.float "price", default: 0.0
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -204,6 +255,8 @@ ActiveRecord::Schema.define(version: 2019_01_16_072004) do
     t.datetime "updated_at", null: false
     t.integer "role"
     t.string "gateway_customer_id"
+    t.string "authentication_token", limit: 30
+    t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -215,10 +268,13 @@ ActiveRecord::Schema.define(version: 2019_01_16_072004) do
   add_foreign_key "cart_items", "users"
   add_foreign_key "carts", "users"
   add_foreign_key "delivery_addresses", "users"
+  add_foreign_key "open_hours", "stores"
   add_foreign_key "orders", "carts"
   add_foreign_key "orders", "delivery_addresses"
   add_foreign_key "orders", "order_statuses"
   add_foreign_key "orders", "users"
   add_foreign_key "payments", "cards"
   add_foreign_key "payments", "orders"
+  add_foreign_key "store_items", "items"
+  add_foreign_key "store_items", "stores"
 end

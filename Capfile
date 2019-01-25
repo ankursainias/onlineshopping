@@ -3,10 +3,12 @@ require "capistrano/setup"
 
 # Include default deployment tasks
 require "capistrano/deploy"
-
-require 'capistrano/rvm'
-set :rvm_type, :user
-set :rvm_ruby_version, '2.5.3'
+# Capfile
+require 'capistrano/rails'
+# Capfile
+require 'capistrano/bundler' # Rails needs Bundler, right?
+require 'capistrano/rails/assets'
+require 'capistrano/rails/migrations'
 
 # Load the SCM plugin appropriate to your project:
 #

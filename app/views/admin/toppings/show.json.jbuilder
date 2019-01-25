@@ -1,0 +1,1 @@
+json.extract! @topping, :name, :price, :active, :created_at, :updated_at

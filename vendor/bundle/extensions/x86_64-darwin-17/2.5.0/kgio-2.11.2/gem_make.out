@@ -1,5 +1,5 @@
-current directory: /Users/ankur/Documents/OnlineShopping/vendor/bundle/gems/kgio-2.11.2/ext/kgio
-/Users/ankur/.rvm/rubies/ruby-2.5.3/bin/ruby -r ./siteconf20190117-27954-yqlcdo.rb extconf.rb
+current directory: /private/var/folders/kg/g5l666h12jjdgbxbyr4cftjc0000gn/T/bundler20190201-38396-dzqajdkgio-2.11.2/gems/kgio-2.11.2/ext/kgio
+/Users/ankur/.rvm/rubies/ruby-2.5.3/bin/ruby -r ./siteconf20190201-38396-1kufgxe.rb extconf.rb
 checking for CLOCK_MONOTONIC in time.h... yes
 checking for clockid_t in time.h... yes
 checking for clock_gettime() in -lrt... no
@@ -37,10 +37,10 @@ checking for rb_str_subseq()... yes
 checking for rb_ary_subseq()... yes
 creating Makefile
 
-current directory: /Users/ankur/Documents/OnlineShopping/vendor/bundle/gems/kgio-2.11.2/ext/kgio
+current directory: /private/var/folders/kg/g5l666h12jjdgbxbyr4cftjc0000gn/T/bundler20190201-38396-dzqajdkgio-2.11.2/gems/kgio-2.11.2/ext/kgio
 make "DESTDIR=" clean
 
-current directory: /Users/ankur/Documents/OnlineShopping/vendor/bundle/gems/kgio-2.11.2/ext/kgio
+current directory: /private/var/folders/kg/g5l666h12jjdgbxbyr4cftjc0000gn/T/bundler20190201-38396-dzqajdkgio-2.11.2/gems/kgio-2.11.2/ext/kgio
 make "DESTDIR="
 compiling accept.c
 compiling autopush.c
@@ -63,6 +63,6 @@ compiling write.c
 compiling writev.c
 linking shared-object kgio_ext.bundle
 
-current directory: /Users/ankur/Documents/OnlineShopping/vendor/bundle/gems/kgio-2.11.2/ext/kgio
+current directory: /private/var/folders/kg/g5l666h12jjdgbxbyr4cftjc0000gn/T/bundler20190201-38396-dzqajdkgio-2.11.2/gems/kgio-2.11.2/ext/kgio
 make "DESTDIR=" install
-/usr/local/opt/coreutils/bin/ginstall -c -m 0755 kgio_ext.bundle ./.gem.20190117-27954-a63dsj
+/usr/local/opt/coreutils/bin/ginstall -c -m 0755 kgio_ext.bundle ./.gem.20190201-38396-16zye8a

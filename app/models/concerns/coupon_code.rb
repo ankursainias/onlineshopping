@@ -5,25 +5,29 @@ module CouponCode
 		validates_date_of :valid_from, after_or_equal_to:  Proc.new { Date.today}, on: :create
 		validates_date_of :valid_until, after_or_equal_to: :valid_from, on: :create
 		validates_presence_of :code, :valid_from
-		validates_numericality_of :amount,
-	        greater_than_or_equal_to: 0,
-	        less_than_or_equal_to: 100,
-	        only_integer: true,
-	        if: :percentage_based?
+		
+		validates_numericality_of  :amount,
+							        greater_than_or_equal_to: 0,
+							        less_than_or_equal_to: 100,
+							        only_integer: true,
+							        if: :percentage_based?
 
 	      validates_numericality_of :amount,
-	        greater_than_or_equal_to: 0,
-	        only_integer: true,
-	        if: :amount_based?
+							        greater_than_or_equal_to: 0,
+							        only_integer: true,
+							        if: :amount_based?
 
 	      validates_numericality_of :redemption_limit,
-	        only_integer: true,
-	        greater_than_or_equal_to: 0
+							        only_integer: true,
+							        greater_than_or_equal_to: 0
 
-	    validate :validate_dates, on: :create    
+	    validate :validate_dates, on: :create
+
 		  after_initialize do
-			  self.code ||= Coupon.genrator_call
-			  self.valid_from ||= Date.current
+	  		if self.new_record?
+		  		self.code ||= Coupon.genrator_call
+		  		self.valid_from ||= Date.current
+				end
 			end
 
 	end

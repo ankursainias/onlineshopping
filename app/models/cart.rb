@@ -22,16 +22,17 @@ class Cart < ApplicationRecord
       :rm => '2',
       :upload => 1,
       :notify_url => root_url,
-      :return => "http://localhost:3000/home/paypal_notify",
+      :return => "#{root_url}home/paypal_notify",
       :invoice => id,
-      :cancel_return => "http://localhost:3000/"+cancel_return
+      :cancel_return => "#{root_url}"+cancel_return,
+      :currency_code => "GBP"
     }
     
     cart_items.each_with_index do |cart_item, index|
       values.merge!({
         "amount_#{index + 1}" => cart_item.sub_total,
         "item_name_#{index + 1}" => cart_item.item.name,
-        "quantity_#{index + 1}" => cart_item.quantity
+        "quantity_#{index + 1}" => cart_item.quantity,
       })
     end
     "https://www.sandbox.paypal.com/cgi-bin/webscr?" + values.to_query

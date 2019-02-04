@@ -3,7 +3,7 @@ class Item < ApplicationRecord
 	has_many :item_dimensions, dependent: :destroy
 	has_many :store_items, dependent: :destroy
 	has_many :dimensions, through: :item_dimensions
-	scope :veg_pizzas, -> { where(category_id: category_with("Vegan Pizzas")) }
+	scope :veg_pizzas, -> { where(category_id: category_with("Vegan Pizza")) }
 	scope :non_veg_pizzas, -> { where(category_id: category_with("Meat Pizza")) }
 	scope :salads, -> { where(category_id: category_with("Salad")) }
 	scope :drinks, -> { where(category_id: category_with("Drink")) }

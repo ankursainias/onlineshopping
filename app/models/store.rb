@@ -1,6 +1,7 @@
 class Store < ApplicationRecord
 	has_many :open_hours, dependent: :destroy
 	has_many :store_items, dependent: :destroy
+	has_many :orders, dependent: :destroy
 	has_many :items, through: :store_items
 	after_create :set_open_hours
 	before_save :set_lat_lng
@@ -16,6 +17,12 @@ class Store < ApplicationRecord
 
 	def store_item(itemId)
 		StoreItem.find_by(store_id: id, item_id: itemId)
+	end
+
+	def self.add_item(itemId)
+		self.all.each do |s|
+			s.store_items.create item_id: itemId
+		end
 	end
 
 	def set_open_hours

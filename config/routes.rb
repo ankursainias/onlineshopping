@@ -1,14 +1,25 @@
 require 'constraints/web_constraint'
 require 'constraints/api_constraint'
+require 'resque/server'
+require 'resque/scheduler'
+require 'resque/scheduler/server'
 Rails.application.routes.draw do
+
+   mount Resque::Server.new, at: "/resque"
   # API routes 
   namespace :api, defaults: { format: :json } do
     scope module: :v1, constraints: ApiConstraint.new(version: 1, default: true) do
+
           resources :stores, only: [:index] do
             get 'items'
             collection do 
               get 'categories'
               get 'customization'
+            end
+            resources :orders, only: [:index,:create] do
+              collection do
+                  # post 'place'
+              end
             end
           end
           resources :testing, only: [] do

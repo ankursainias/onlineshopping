@@ -22,7 +22,7 @@ class Admin::StoresController < ApplicationController
   end
 
   def items
-    @store_items = @store.items.includes(:store_items)
+    @store_items = @store.items.includes(:store_items,:category)
   end
 
 

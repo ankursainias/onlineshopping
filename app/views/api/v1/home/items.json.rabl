@@ -17,7 +17,11 @@ object false
 				  	end
 			  end
 		end
-		child @ingredients, root: "ingredients", :object_root => false do
-		 	attributes :id, :name
-		end		
+			child :ingredients, root: "ingredients", :object_root => false do
+			 	attributes :id, :name
+			end	
+	end
+	
+	child @toppings, root: "toppings", :object_root => false do
+	  attributes :id, :name,:price
 	end

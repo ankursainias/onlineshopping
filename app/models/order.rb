@@ -31,15 +31,91 @@ class Order < ApplicationRecord
   		payments.new(pay_type: "Cash").save!
   end
 
-  def card_payment(options,grand_total)
-    if options[:card_id].present?
-      @card = Card.find(card_id)
-      response = @card.gateway_payment(grand_total)
+  def card_payment(options)
+    begin
+      if options[:user_type] == "Guest"
+      p  token = create_source(options[:card])
+        response = gateway_payment_request(options[:grand_total],token.try(:id))
+      else
+        @card = Card.find_by(id: options[:id])
+        if @card.present?
+          response = @card.gateway_payment_request(options[:grand_total])
+        else
+          token = create_source(options[:card])
+          scard = gateway_add_card_request(token)
+          @card = user.cards.new(gateway_card_id: token.card.id)
+          @card.exp_month = token.card.exp_month
+          @card.exp_year = token.card.exp_year
+          @card.last4 = token.card.last4
+          @card.card_type = token.card.brand
+          @card.name = token.card.name
+          @card.fingerprint = token.card.fingerprint
+          @card.save!
+          user.cards.where.not(id: @card.id).update_all(default: false)
+          response = @card.gateway_payment_request(options[:grand_total])
+        end
+      end
+      create_payment(response)
+
+    rescue Stripe::StripeError => e
+    rescue Exception => e
+     raise e.message
     end
+
+  end
+
+  def create_payment(response)
+      payment = payments.new(pay_type: "Card")
+      payment.transaction_id = response.id
+      payment.pay_time = Time.at(response.created).to_datetime
+      payment.failure_message = response.failure_message
+      payment.failure_code = response.failure_code
+      payment.gateway_status = response.status
+      payment.captrued = response.captured
+      payment.save!
+  end
+
+  def gateway_add_card_request(source)
+    begin
+      fingerprints = user.cards.pluck(:fingerprint)
+      raise "Card already exist."  if fingerprints.include?(source.card.fingerprint)
+      customer = find_customer(source)
+      debugger
+      customer.sources.create(source: "#{source.id}")
+      rescue Stripe::StripeError => e
+      rescue Exception => e
+      raise e.message
+    end
+  end
+
+  def find_customer(source)
+     if user.gateway_customer_id.present?
+      customer = Stripe::Customer.retrieve("#{user.gateway_customer_id}")
+     else
+      customer = Stripe::Customer.create(
+        :email => user.email,
+        :description => "Customer for #{user.email}",
+        :source => "#{source.id}"
+      )
+      end
+      user.update(gateway_customer_id: customer.id)
+      return customer
   end
 
   def paypal_payment(options)
 
+  end
+
+  def gateway_payment_request(*options)
+
+    response = Stripe::Charge.create(
+      :amount => options[0].to_i * 100,
+      :currency => DEFAULT_CURRENCY,
+      :source => "#{options[1]}",
+      :capture => true,
+      :description => "Charge for as a Firezza Guest User"    
+      )
+    response
   end
 
   def pay_now(card)
@@ -68,7 +144,7 @@ class Order < ApplicationRecord
 		    :number => card[:number],
 		    :exp_month => card[:exp_month],
 		    :exp_year => card[:exp_year],
-		    :cvc => card[:cvc]
+		    :cvc => card[:cvc]  
 		  },
 		)
   	source

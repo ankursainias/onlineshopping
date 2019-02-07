@@ -12,7 +12,7 @@ class Payment < ApplicationRecord
 	end
 
   def card_based?
-  	pay_type == "Card"
+  	pay_type == "Card" && order.user.present?
   end
 
 end

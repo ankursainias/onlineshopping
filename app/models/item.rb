@@ -9,7 +9,7 @@ class Item < ApplicationRecord
 	scope :drinks, -> { where(category_id: category_with("Drink")) }
 	scope :desserts, -> { where(category_id: category_with("Dessert")) }
 	scope :sides, -> { where(category_id: category_with("Side")) }
-	has_many :cart_items	
+	has_many :cart_items, dependent: :destroy	
 	belongs_to :category
 
 	def out_of_stock(store)

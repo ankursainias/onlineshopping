@@ -31,6 +31,7 @@ class Api::V1::ApplicationController < ActionController::API
 		err_hsh = HashWithIndifferentAccess.new
 		err_hsh[:message] = e.message
 		err_hsh[:humanize] = e.message.humanize
+		err_hsh[:error_trace] = e.backtrace
 		render json: err_hsh, status: :bad_status
 	end
 	

@@ -2,7 +2,7 @@ class Card < ApplicationRecord
   belongs_to :user
 
 
-  def gateway_payment(grand_total)
+  def gateway_payment_request(grand_total)
     response = Stripe::Charge.create(
       :amount => grand_total.to_i * 100,
       :currency => DEFAULT_CURRENCY,

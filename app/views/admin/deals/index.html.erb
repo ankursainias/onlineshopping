@@ -1,0 +1,39 @@
+<h1>Listing deals</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Price</th>
+      <th>Name</th>
+      <th>Image</th>
+      <th>Initial time</th>
+      <th>End time</th>
+      <th>Description</th>
+      <th>Amount</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @deals.each do |deal| %>
+      <tr>
+        <td><%= deal.price.title.titleize %></td>
+        <td><%= deal.name %></td>
+        <td><%= image_tag deal.picture.image.url(:thumb) %></td>
+        <td><%= deal.initial_time %></td>
+        <td><%= deal.end_time %></td>
+        <td><%= deal.description %></td>
+        <td><%= deal.amount %></td>
+        <td><%= link_to 'Show', [:admin, deal] %></td>
+        <td><%= link_to 'Edit', edit_admin_deal_path(deal) %></td>
+        <td><%= link_to 'Destroy', [:admin, deal], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Deal', new_admin_deal_path %>

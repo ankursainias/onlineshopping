@@ -52,7 +52,8 @@ class HomeController < ApplicationController
     @nv_pizzas = Item.non_veg_pizzas
     @salads = Item.salads
     @drinks = Item.drinks
-  	@desserts = Item.desserts
+    @desserts = Item.desserts
+  	@sides = Item.sides
   	if user_signed_in?
   		@cart = Cart.find_by(user_id: current_user.id, purchased: false)
  	else

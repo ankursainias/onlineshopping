@@ -43,15 +43,19 @@ class Order < ApplicationRecord
         else
           token = create_source(options[:card])
           scard = gateway_add_card_request(token)
-          @card = user.cards.new(gateway_card_id: token.card.id)
-          @card.exp_month = token.card.exp_month
-          @card.exp_year = token.card.exp_year
-          @card.last4 = token.card.last4
-          @card.card_type = token.card.brand
-          @card.name = token.card.name
-          @card.fingerprint = token.card.fingerprint
-          @card.save!
-          user.cards.where.not(id: @card.id).update_all(default: false)
+          if scard[1] == "new"
+            @card = user.cards.new(gateway_card_id: token.card.id)
+            @card.exp_month = token.card.exp_month
+            @card.exp_year = token.card.exp_year
+            @card.last4 = token.card.last4
+            @card.card_type = token.card.brand
+            @card.name = token.card.name
+            @card.fingerprint = token.card.fingerprint
+            @card.save!
+            user.cards.where.not(id: @card.id).update_all(default: false)
+          else
+            @card = scard[0]
+          end
           response = @card.gateway_payment_request(options[:grand_total])
         end
       end
@@ -77,11 +81,10 @@ class Order < ApplicationRecord
 
   def gateway_add_card_request(source)
     begin
-      fingerprints = user.cards.pluck(:fingerprint)
-      raise "Card already exist."  if fingerprints.include?(source.card.fingerprint)
+      card = user.cards.find_by(fingerprint: source.card.fingerprint)
       customer = find_customer(source)
-      debugger
-      customer.sources.create(source: "#{source.id}")
+        return card,"old" if card.present?
+        return customer.sources.create(source: "#{source.id}"),"new"
       rescue Stripe::StripeError => e
       rescue Exception => e
       raise e.message
@@ -102,8 +105,12 @@ class Order < ApplicationRecord
       return customer
   end
 
-  def paypal_payment(options)
+  def paypal_payment(*options)
+     cart.paypal_request(options[0][:store_id],options[1])
+  end
 
+  def create_paypal_payment(*options)
+    cart.setup_payment(options[0][:store_id],options[1],self)
   end
 
   def gateway_payment_request(*options)

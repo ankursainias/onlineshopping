@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_07_131402) do
+ActiveRecord::Schema.define(version: 2019_02_12_082349) do
 
   create_table "brand_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "brand_id"
@@ -106,6 +106,28 @@ ActiveRecord::Schema.define(version: 2019_02_07_131402) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "attachments"
+  end
+
+  create_table "deal_items", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.bigint "deal_id"
+    t.bigint "item_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deal_id"], name: "index_deal_items_on_deal_id"
+    t.index ["item_id"], name: "index_deal_items_on_item_id"
+  end
+
+  create_table "deals", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.bigint "price_id"
+    t.string "name"
+    t.float "amount", default: 0.0
+    t.string "image"
+    t.datetime "initial_time"
+    t.datetime "end_time"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["price_id"], name: "index_deals_on_price_id"
   end
 
   create_table "delivery_addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -230,6 +252,14 @@ ActiveRecord::Schema.define(version: 2019_02_07_131402) do
     t.index ["imageable_type", "imageable_id"], name: "index_pictures_on_imageable_type_and_imageable_id"
   end
 
+  create_table "prices", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.string "title"
+    t.string "p_type"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "store_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "store_id"
     t.bigint "item_id"
@@ -287,6 +317,9 @@ ActiveRecord::Schema.define(version: 2019_02_07_131402) do
   add_foreign_key "carts", "users"
   add_foreign_key "category_ingredients", "categories"
   add_foreign_key "category_ingredients", "ingredients"
+  add_foreign_key "deal_items", "deals"
+  add_foreign_key "deal_items", "items"
+  add_foreign_key "deals", "prices"
   add_foreign_key "delivery_addresses", "users"
   add_foreign_key "item_dimensions", "dimensions"
   add_foreign_key "item_dimensions", "items"

@@ -4,7 +4,6 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
 	before_action :set_store,only: [:index,:create]
 	before_action :set_cart, only: [:create]
 
-
 	def index
 		begin
 			@orders = @store.orders
@@ -19,16 +18,90 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
 		@order = @store.orders.new(order_parameters)
 		@order.cart = @cart
 		@order.save!
-		set_cart_items(params)
-		calculate_invoice
-		make_payment
-		render :show
+		response  =  successful_initializer(params)
+		if response.class == Hash
+			render json: response
+		else
+			render :show
+		end
 		rescue Stripe::StripeError => e
 		rescue Exception => e
+			unsuccessful_api_call
 			error_handling_bad_request(e)
 		end
 		
 	end
+
+
+	def unsuccessful_api_call
+			@order.delivery_address.destroy
+			@order.destroy
+			@cart.cart_items.destroy_all
+	end
+
+	def successful_initializer(params)
+		set_cart_items(params)
+		calculate_invoice
+		deal_checker
+		make_payment
+	end
+
+	def paypal_obj
+		begin
+		 @order = Order.find(params[:orderID])
+		 @cart = @order.cart.update(purchased: true)
+      payment_params = {}
+      payment_params[:transaction_id] = params[:payer_id]
+      payment_params[:token] = params[:token]
+      payment_params[:failure_message] = ""
+      payment_params[:failure_code] = ""
+      payment_params[:gateway_status] = params[:payment_status]
+      payment_params[:pay_type] = "Paypal"
+      payment_params[:fee] = params[:payment_fee].to_f
+      payment_params[:currency] = params[:mc_currency]
+      @payment = @order.payments.new(payment_params)
+      @payment.save!
+      hsh = {}
+      hsh[:message] = "You order has been placed"
+      render json: hsh, status: :ok
+		rescue Exception => e
+			raise e.message
+		end
+	end
+ 
+	def paypal_success
+			begin
+			@payment = Payment.find_by(transaction_id: params[:paymentId])
+			@payment.payer_id = params[:PayerID]
+			@payment.completed = true
+			@payment.save!
+			@order = @payment.order
+			@order.cart.update(purchased: true)
+			paypal_payment = @payment.find_paypal_payment
+			if paypal_payment.execute(:payer_id => params[:PayerID])
+				@payment.update_attributes(gateway_status: paypal_payment.state)
+				render :show
+			else
+				p paypal_payment.error
+			  raise paypal_payment.error
+			end
+		rescue Exception => e
+			raise e.message
+		end
+	end
+
+
+	def paypal_cancel
+		begin
+			hsh = {}
+			hsh[:message] = "Something went wrong. please try again."
+			# raise "success paypal_cancel"
+			render  json: hsh, status: :ok
+		rescue Exception => e
+			error_handling_bad_request(e)
+		end
+	end
+
 
 	private
 
@@ -43,6 +116,7 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
 	end
 
 	def set_cart_items(params)
+		@cart.cart_items.destroy_all
 		params[:cart_items].each do |item|
 			cart_item = @cart.cart_items.new(cart_item_params(item))
 			cart_item.user = current_user if user_signed_in?
@@ -86,18 +160,40 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
 			type = params[:payment][:type].try(:titleize)
 			if type == "Cash"
 				@payment = @order.cash_payment
+					@cart.update(purchased: true)
 					elsif  type == "Card"
 							hsh = HashWithIndifferentAccess.new(card: params[:card])
 							hsh[:grand_total] = @grand_total
 							hsh[:user_type] =  user_signed_in? ? "Customer" : "Guest" 
-						
 						@payment = @order.card_payment(hsh)
+							@cart.update(purchased: true)
 							elsif type == "Paypal"
-								@payment = @order.paypal_payment
+								hsh = {}
+								hsh[:request_url] = @order.create_paypal_payment(params,root_url)
+								# hsh[:request_url] = @order.paypal_payment(params,root_url)
+								return hsh
 							else
 								raise "Please select valid payment method."
 			end
-			@cart.update(purchased: true)
+		rescue PayPal::SDK::Core::Exceptions::UnsuccessfulApiCall => e
+		rescue Exception => e
+			raise e.message
+		end
+	end
+
+	def deal_checker
+		begin
+			@deal = Deal.find_by(id: params[:deal][:id]) if params[:deal].present?
+			if @deal.present?
+				@final_cost = @deal.validate_and_apply(@cart)
+				@sub_total = @final_cost[:amount].round(2)
+				@discount_total = @final_cost[:discount].round(2)
+				@grand_total = @final_cost[:total].round(2)
+				@order.sub_total = @sub_total
+				@order.grand_total = @grand_total
+				@order.discount_total = @discount_total
+				@order.save!
+			end
 		rescue Exception => e
 			raise e.message
 		end

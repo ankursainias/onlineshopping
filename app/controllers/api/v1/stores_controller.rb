@@ -9,7 +9,7 @@ class Api::V1::StoresController < Api::V1::ApplicationController
 				@address = Geokit::Geocoders::GoogleGeocoder.reverse_geocode "#{params[:lat]},#{params[:lng]}"
 				params[:postal_code] = @address.try(:zip) if @address.success
 			end
-			@search = Store.search do
+			@search = Store.search(:include => [:open_hours]) do
 				fulltext(params[:postal_code]) do
 					fields(:postal_code)
 				end

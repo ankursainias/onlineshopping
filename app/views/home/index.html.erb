@@ -83,6 +83,26 @@
 
       <%end%>
     </div>
+        <div class="row text-center">
+      <h2>Side</h2>
+    <% @sides.each do |pizza| %>
+    <div class="col-sm-4">
+      <div class="thumbnail1">
+        <%#debugger%>
+        <img src="<%= pizza.picture.try(:image).present? ? pizza.picture.image.url(:small) : '/assets/npizza6' %>">
+        <p><strong><%= pizza.name.titleize %></strong></p>
+        <p>
+          <% pizza.item_dimensions.each do |item_dimension|%>
+            <p><input class ="item_dimension_check" name="item_dimension" type="radio" value="<%= item_dimension.id %>" item-id="<%= pizza.id %>" />&nbsp;<%=item_dimension.dimension.size %>
+            <%=number_to_currency(item_dimension.price, unit: "£", separator: ",", delimiter: "") %>(Serve <%= item_dimension.dimension.serve %>)</p>
+          <%end%>
+        </p>
+        <p><button class="btn btn-danger add_to_cart disabled" item-id = "<%= pizza.id %>" >Add to Cart</button>
+      </div>
+    </div>
+
+      <%end%>
+    </div>
     <div class="row text-center">
       <h2>Drinks</h2>
     <% @drinks.each do |pizza| %>

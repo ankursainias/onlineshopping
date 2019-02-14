@@ -38,6 +38,7 @@ module CouponCode
 	end
 
 	def apply(options)
+		
     input_amount = BigDecimal("#{options[:amount]}")
     discount = BigDecimal(percentage_based? ? percentage_discount(input_amount) : input_amount)
     total = [0, input_amount - discount].max

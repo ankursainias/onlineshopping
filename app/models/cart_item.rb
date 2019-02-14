@@ -9,4 +9,9 @@ class CartItem < ApplicationRecord
   def sub_total
   	return item_dimension.price * quantity
   end
+
+  def toppings_price
+     Topping.where(id: topping_ids).pluck(:price).sum.to_f
+  end
+
 end

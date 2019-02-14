@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_many :orders, -> { order "created_at DESC" }, dependent: :destroy
   has_many :coupon_redemptions, dependent: :destroy
   has_many :delivery_addresses, dependent: :destroy
+  has_many :cards, dependent: :destroy
   
   def set_default_role
     self.role ||= :user

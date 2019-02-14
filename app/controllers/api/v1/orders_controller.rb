@@ -19,6 +19,7 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
 		@order.cart = @cart
 		@order.save!
 		response  =  successful_initializer(params)
+		@order
 		if response.class == Hash
 			render json: response
 		else

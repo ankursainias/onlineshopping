@@ -39,22 +39,25 @@ class Api::V1::StoresController < Api::V1::ApplicationController
   # Display all store items including regular dimensions and item dimensions	
   def items
   	begin
-  	@categories = Category.all.includes(items: [:dimensions])
+  	@categories = Category.all.includes(items: [:dimensions,:picture,:store_items])
   	@ingredients = Ingredient.actives
+  	@toppings = Topping.actives
   	render  'api/v1/home/items', status: :ok
   	rescue Exception => e
   		error_handling_bad_request(e)
   	end
 
 	end
-	# All cutomization items like ingredients and toppings
+	# All cutomization items like toppings
 	def customization
 		begin
+			@ingredients = Ingredient.actives
 			@toppings = Topping.actives
 		rescue Exception => e
 			error_handling_bad_request(e)
 		end
 	end
+
 
 	private
 

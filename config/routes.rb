@@ -10,7 +10,11 @@ Rails.application.routes.draw do
               get 'categories'
               get 'customization'
             end
-            resources :orders, only: [:index,:create] do
+            resources :orders, only: [:index,:create,:show] do
+              collection do
+                get 'paypal_success'
+                get 'paypal_cancel'
+              end
             end  
           end
           resources :testing, only: [] do

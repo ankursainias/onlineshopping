@@ -6,6 +6,7 @@ class OpenHour < ApplicationRecord
   validates_uniqueness_of :close, scope: [:store_id, :day]
    validate :opens_before_closes 
   validate :valid_from_before_valid_through 
+  default_scope { order('day asc') }
 
   def formated_open
     open.strftime("%I:%M%p")

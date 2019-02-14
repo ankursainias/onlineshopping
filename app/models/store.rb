@@ -1,6 +1,7 @@
 class Store < ApplicationRecord
 	has_many :open_hours, dependent: :destroy
 	has_many :store_items, dependent: :destroy
+	has_many :orders, dependent: :destroy
 	has_many :items, through: :store_items
 	after_create :set_open_hours
 	before_save :set_lat_lng
@@ -19,7 +20,7 @@ class Store < ApplicationRecord
 	end
 
 	def set_open_hours
-		days = [1,2,3,4,5,6,7]
+		days = [0,1,2,3,4,5,6]
 		days.each do |day|
 			OpenHour.create!(store_id: id,day: day,open: "08:00AM", close: "11:00PM", valid_from: Time.now, valid_through: Time.now + 1.year)
 		end

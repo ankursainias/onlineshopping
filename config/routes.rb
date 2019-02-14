@@ -10,6 +10,8 @@ Rails.application.routes.draw do
               get 'categories'
               get 'customization'
             end
+            resources :orders, only: [:index,:create] do
+            end  
           end
           resources :testing, only: [] do
             collection do

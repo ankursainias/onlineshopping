@@ -34,9 +34,9 @@ class Api::V1::OrdersController < Api::V1::ApplicationController
 
 
 	def unsuccessful_api_call
-			@order.delivery_address.destroy
-			@order.destroy
-			@cart.cart_items.destroy_all
+			@order.try(:delivery_address).try(:destroy)
+			@order.try(:destroy)
+			@cart.try(:cart_items).try(:destroy_all)
 	end
 
 	def successful_initializer(params)

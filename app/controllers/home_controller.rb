@@ -4,7 +4,6 @@ class HomeController < ApplicationController
 	before_action :set_cart, only: [:apply_coupon]
 
 
-
   def testing
     begin
       require 'paypal-sdk-rest'
@@ -23,22 +22,22 @@ class HomeController < ApplicationController
         :payer =>  {
           :payment_method =>  "paypal" },
         :redirect_urls => {
-          :return_url => "#{root_url}home/paypal_return",
-          :cancel_url => "#{root_url}home/checkout" },
+          :return_url => "http://localhost:3000/home/paypal_return",
+          :cancel_url => "http://localhost:3000/home/checkout" },
         :transactions =>  [{
           :item_list => {
             :items => [{
               :name => "item",
               :sku => "item",
               :price => "11",
-              :currency => "GBP",
+              :currency => "USD",
               :quantity => 1 }]},
           :amount =>  {
             :total =>  "11",
-            :currency =>  "GBP" },
+            :currency =>  "USD" },
           :description =>  "This is the payment transaction description." }]})
       @payment.create!
-      Order.second.payments.new(transaction_id: @payment.id,pay_time: Time.now, gateway_status: "succeeded",pay_type: "paypal").save!
+      Order.second.build_payment(transaction_id: @payment.id,pay_time: Time.now, gateway_status: "succeeded",pay_type: "paypal").save!
       # "PAY-425999139T568793XLQ7NZFQ"
       # Payment.create!(transaction_id: @payment)
       redirect_to @payment.links.find{|v| v.rel == "approval_url" }.href
@@ -49,11 +48,7 @@ class HomeController < ApplicationController
   end
   def index
   	@v_pizzas = Item.veg_pizzas
-    @nv_pizzas = Item.non_veg_pizzas
-    @salads = Item.salads
-    @drinks = Item.drinks
-    @desserts = Item.desserts
-  	@sides = Item.sides
+  	@nv_pizzas = Item.non_veg_pizzas
   	if user_signed_in?
   		@cart = Cart.find_by(user_id: current_user.id, purchased: false)
  	else
@@ -120,10 +115,10 @@ class HomeController < ApplicationController
       payment_params[:fee] = params[:payment_fee].to_f
       payment_params[:pay_time] = params[:payment_date]
       payment_params[:currency] = params[:mc_currency]
-      @payment = @current_order.payments.new(payment_params)
+      @payment = @current_order.build_payment(payment_params)
       @payment.save!
       flash[:notice] = "Your order has been placed."
-      redirect_to home_index_path
+      redirect_to root_url
   end
 
   def add_to_cart
@@ -211,7 +206,7 @@ class HomeController < ApplicationController
       @current_order.save!
      if user_signed_in? && @current_order.grand_total > 0 && params[:pay_type] == "Card"
         payment_params = @current_order.pay_now(params[:card])
-        @payment = @current_order.payments.new(payment_params)
+        @payment = @current_order.build_payment(payment_params)
         @payment.save!
       else
         payment_params = {}
@@ -221,7 +216,7 @@ class HomeController < ApplicationController
         payment_params[:gateway_status] = "succeeded"
         payment_params[:pay_type] = "Cash"
         payment_params[:pay_time] = Time.now
-        @payment = @current_order.payments.new(payment_params)
+        @payment = @current_order.build_payment(payment_params)
         @payment.save!
      end
      @cart = Cart.find(session[:cart_id])

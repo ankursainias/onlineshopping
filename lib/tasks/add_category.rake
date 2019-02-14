@@ -4,6 +4,6 @@ task :add_category => :environment do
 						{id: 4, name: "Salad"},
 						{id: 5, name: "Drink"},
 						{id: 6, name: "Dessert"}])
-	Category.first.update name: "Vegan Pizza" 
+	Category.first.update name: "Vegan Pizzas" 
 	
 end

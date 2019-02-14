@@ -30,8 +30,7 @@ gem 'paypal-sdk-rest'
 
 gem 'geokit', '~> 1.13', '>= 1.13.1'
 
-gem 'resque', require: 'resque/server'
-gem 'resque-scheduler', '~> 4.0'
+gem 'concurrency'
 
 gem 'sunspot_rails'
 gem 'sunspot_solr' # optional pre-packaged Solr distribution for use in development. Please find a section below explaining other options for running Solr in production

@@ -3,8 +3,6 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>SR No.</th>
-      <th>Category Name</th>
       <th>Name</th>
       <th>Out of Stock</th>
       <th>Action</th>
@@ -12,10 +10,8 @@
   </thead>
 
   <tbody>
-    <% @store_items.each_with_index do |item,index| %>
+    <% @store_items.each do |item| %>
       <tr>
-        <td><%= index + 1 %></td>
-        <td><%= item.category.name %></td>
         <td><%= item.name %></td>
         <td><%= item.store_items.first.out_of_stock ? "Yes" : "No" %></td>
         <td>

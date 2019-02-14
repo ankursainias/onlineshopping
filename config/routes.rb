@@ -1,39 +1,14 @@
 require 'constraints/web_constraint'
 require 'constraints/api_constraint'
-require 'resque/server'
-require 'resque/scheduler'
-require 'resque/scheduler/server'
 Rails.application.routes.draw do
-
-  namespace :admin do
-    resources :deals
-  end
-  namespace :admin do
-    resources :prices
-  end
-  namespace :admin do
-    resources :deal_items
-  end
-   mount Resque::Server.new, at: "/resque"
   # API routes 
   namespace :api, defaults: { format: :json } do
     scope module: :v1, constraints: ApiConstraint.new(version: 1, default: true) do
-          resources :deals, only: [:index] do
-            post 'apply'
-          end
-
           resources :stores, only: [:index] do
             get 'items'
             collection do 
               get 'categories'
               get 'customization'
-            end
-            resources :orders, only: [:index,:create] do
-              collection do
-                  post 'paypal_obj'
-                  get 'paypal_cancel'
-                  get 'paypal_success'
-              end
             end
           end
           resources :testing, only: [] do

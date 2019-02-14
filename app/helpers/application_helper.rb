@@ -1,5 +1,5 @@
 module ApplicationHelper
-	
+
 	def set_grand_total(amount,cart)
 		if amount.class == Hash
 			session[:grand_total] = amount[:total]
@@ -12,9 +12,7 @@ module ApplicationHelper
 		end	
 		session[:cart_id] = cart.id
 	end
-	
-	# currency converision helper start
-	# Note:- Default currency converision is INR to GBP
+
     def convert(*args)
       if args.length == 3
           convert_full(*args)
@@ -49,5 +47,4 @@ module ApplicationHelper
         return rate
     end
 	end
-	# currency helper end
 end

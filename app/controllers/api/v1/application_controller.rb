@@ -1,7 +1,6 @@
 class Api::V1::ApplicationController < ActionController::API
-	before_action :set_api_format
 	before_action :set_prequest
-	DEFAULT_CURRENCY = "GBP"
+
 	# skip_before_action :verify_authenticity_token
 	# before_action :authenticate_api_user
 
@@ -27,30 +26,12 @@ class Api::V1::ApplicationController < ActionController::API
 		 	end
 	end
 
-
-	def set_api_format
-		request.format = :json
-	end
-
-
 	# Error handling
 	def error_handling_bad_request(e)
-		puts "Exception Raised on #{Time.now} #{e.message}"
-		ary_errors = []
-		ary_errors_obj = {}
-		ary_errors_obj[:domain] = "usageLimits"
-		ary_errors_obj[:reason] = e.message
-		ary_errors_obj[:message] = e.message.humanize
-		ary_errors_obj[:extendedHelp] = ""
-		ary_errors.push(ary_errors_obj)
-		error_obj = {}
-		error_obj[:errors] = ary_errors
-		error_obj[:code] = 400
-		error_obj[:message] = e.message.humanize
-		err_hash = {}
-		err_hash[:error] = error_obj 
-		err_hash[:error_trace] = e.backtrace
-		render :json => err_hash.to_json, status: :bad_request
+		err_hsh = HashWithIndifferentAccess.new
+		err_hsh[:message] = e.message
+		err_hsh[:humanize] = e.message.humanize
+		render json: err_hsh, status: :bad_status
 	end
 	
 end

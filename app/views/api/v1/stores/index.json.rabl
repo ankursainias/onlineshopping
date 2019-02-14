@@ -8,10 +8,7 @@ if @stores.blank?
 else
 	object false
 	child @stores, root: "stores", :object_root => false do
-	  attributes :id, :name,:address,:postal_code,:city,:phone,:lat,:lng
-		child :open_hours, root: "open_hours", :object_root => false do
-		  attributes :day,:english_day,:formated_open,:formated_close
-		end
-	node(:current_locate_postal_code) { @postal_code }
+	  attributes :id, :name,:address,:postal_code,:city,:phone,:lat,:lng,:current_day_open_hours
 	end
+	node(:current_locate_postal_code) { @postal_code }
 end

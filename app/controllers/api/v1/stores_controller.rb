@@ -9,7 +9,7 @@ class Api::V1::StoresController < Api::V1::ApplicationController
 				@address = Geokit::Geocoders::GoogleGeocoder.reverse_geocode "#{params[:lat]},#{params[:lng]}"
 				params[:postal_code] = @address.try(:zip) if @address.success
 			end
-			@search = Store.search(:include => [:open_hours]) do
+			@search = Store.search do
 				fulltext(params[:postal_code]) do
 					fields(:postal_code)
 				end
@@ -39,25 +39,22 @@ class Api::V1::StoresController < Api::V1::ApplicationController
   # Display all store items including regular dimensions and item dimensions	
   def items
   	begin
-  	@categories = Category.all.includes(items: [:dimensions,:picture,:store_items])
+  	@categories = Category.all.includes(items: [:dimensions])
   	@ingredients = Ingredient.actives
-  	@toppings = Topping.actives
   	render  'api/v1/home/items', status: :ok
   	rescue Exception => e
   		error_handling_bad_request(e)
   	end
 
 	end
-	# All cutomization items like toppings
+	# All cutomization items like ingredients and toppings
 	def customization
 		begin
-			@ingredients = Ingredient.actives
 			@toppings = Topping.actives
 		rescue Exception => e
 			error_handling_bad_request(e)
 		end
 	end
-
 
 	private
 

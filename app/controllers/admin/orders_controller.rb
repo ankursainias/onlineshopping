@@ -4,7 +4,7 @@ class Admin::OrdersController < ApplicationController
   # GET /admin/orders
   # GET /admin/orders.json
   def index
-    @orders = Order.all.includes(:order_status,:user)
+    @orders = Order.all
   end
 
   # GET /admin/orders/1

@@ -4,7 +4,7 @@ class OpenHour < ApplicationRecord
   validates_inclusion_of :day, :in => 1..7
   validates_uniqueness_of :open, scope: [:store_id, :day]
   validates_uniqueness_of :close, scope: [:store_id, :day]
-  validate :opens_before_closes 
+   validate :opens_before_closes 
   validate :valid_from_before_valid_through 
 
   def formated_open

@@ -1,1 +1,0 @@
-json.extract! @deal, :price_id, :name, :image, :initial_time, :end_time, :description, :amount, :created_at, :updated_at

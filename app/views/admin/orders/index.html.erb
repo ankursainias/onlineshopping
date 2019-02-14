@@ -18,8 +18,7 @@
   </thead>
 
   <tbody>
-    <%# rate = get_rate("INR","GBP") %>
-    <% rate = 1 %>
+    <% rate = get_rate("INR","GBP") %>
     <% @orders.each do |order| %>
       <tr>
         <td><%= order.user.try(:email).present? ? order.user.try(:email) : "Guest User" %></td>

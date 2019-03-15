@@ -49,7 +49,11 @@ class Admin::ItemsController < ApplicationController
   def update
     respond_to do |format|
       if @item.update(item_params)
-         @item.build_picture(image: params[:item][:image]).save!
+        if @item.picture.present?
+         @item.picture.update(image: params[:item][:image])
+        else
+         @item.build_picture.update(image: params[:item][:image]).save!
+        end
         format.html { redirect_to [:admin, @item], notice: 'Item was successfully updated.' }
         format.json { head :no_content }
       else

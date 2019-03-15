@@ -10,7 +10,7 @@ class Cart < ApplicationRecord
   			total = total + (ItemDimension.find(cart_item.item_dimension_id).price * cart_item.quantity)
         total = total + cart_item.toppings_price
   		end
-  		return total
+  		return total.round(2)
   end
 
   def setup_payment(*options)
@@ -31,8 +31,9 @@ class Cart < ApplicationRecord
             :items => item_list},
           :amount =>  {
             :total =>  "#{total}",
-            :currency =>  "GBP" },
+            :currency =>  DEFAULT_CURRENCY },
           :description =>  "This is the payment transaction description." }]})
+       # debugger
       @paypal_payment.create!
       initialize_payment(@paypal_payment,options[2])
        @paypal_payment.links.find{|v| v.rel == "approval_url" }.href
@@ -71,7 +72,7 @@ class Cart < ApplicationRecord
               :name => cart_item.item.name,
               :sku => "Item_#{cart_item.item_id}",
               :price => "#{cart_item.sub_total}",
-              :currency => "GBP",
+              :currency => DEFAULT_CURRENCY,
               :quantity => cart_item.quantity 
             }
         itemList.push(item)
@@ -79,9 +80,9 @@ class Cart < ApplicationRecord
        toppings.each_with_index do |topping,index|
         item =   {
               :name => topping.name,
-              :sku => "#Topping of {cart_item.item.name} item",
+              :sku => "Topping of #{cart_item.item.name} item",
               :price => "#{topping.price}",
-              :currency => "GBP",
+              :currency => DEFAULT_CURRENCY,
               :quantity => 1
             }
         itemList.push(item)      

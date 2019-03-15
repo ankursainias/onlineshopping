@@ -59,17 +59,17 @@
     <!-- *** This fieldType is used by Sunspot! *** -->
     <fieldType name="rand" class="solr.RandomSortField" omitNorms="true"/>
     <!-- *** This fieldType is used by Sunspot! *** -->
-    <fieldType name="text" class="solr.TextField" omitNorms="false">
+<!--     <fieldType name="text" class="solr.TextField" omitNorms="false">
       <analyzer>
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.PorterStemFilterFactory"/>
       </analyzer>
-    </fieldType>
+    </fieldType> -->
     
     <!-- partial text search code start -->
-<!--     <fieldType name="text" class="solr.TextField" omitNorms="false">
+    <fieldType name="text" class="solr.TextField" omitNorms="false">
       <analyzer>
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StandardFilterFactory"/>
@@ -82,7 +82,7 @@
         <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
       </analyzer>
-    </fieldType> -->
+    </fieldType>
     <!-- partial text search text end -->
     <!-- *** This fieldType is used by Sunspot! *** -->
     <fieldType name="boolean" class="solr.BoolField" omitNorms="true"/>

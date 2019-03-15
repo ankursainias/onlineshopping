@@ -140,6 +140,9 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
+    maily (0.9.0)
+      rails (>= 3.0.0)
+      sass-rails
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
     method_source (0.9.2)
@@ -171,6 +174,9 @@ GEM
       mime-types
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
+    passenger (6.0.2)
+      rack
+      rake (>= 0.8.1)
     paypal-sdk-rest (1.7.3)
       multi_json (~> 1.0)
       xml-simple
@@ -325,9 +331,11 @@ DEPENDENCIES
   jbuilder (~> 2.5)
   jquery-rails
   listen (>= 3.0.5, < 3.2)
+  maily
   mysql2
   oj
   paperclip (~> 6.0.0)
+  passenger (>= 5.0.25)
   paypal-sdk-rest
   progress_bar (~> 1.0, >= 1.0.5)
   puma (~> 3.11)

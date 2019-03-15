@@ -15,6 +15,10 @@ class Store < ApplicationRecord
 		# paginate :page => 1, :per_page => 2
 	end
 
+	# latlon(:location) { 
+ #      Sunspot::Util::Coordinates.new(store.lat, store.lng)
+ #    }
+
 	def store_item(itemId)
 		StoreItem.find_by(store_id: id, item_id: itemId)
 	end

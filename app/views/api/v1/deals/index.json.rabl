@@ -1,6 +1,6 @@
 object false
 	child @deals, root: "deals", :object_root => false do
-	  attributes :id, :name,:amount,:description
+	  attributes :id, :name,:amount,:description,:initial_time,:end_time
 	  	child :price, root: "price", :object_root => false do
 	  		attributes :id, :title,:p_type
 		end

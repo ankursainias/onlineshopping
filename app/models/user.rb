@@ -13,6 +13,11 @@ class User < ApplicationRecord
   has_many :coupon_redemptions, dependent: :destroy
   has_many :delivery_addresses, dependent: :destroy
   has_many :cards, dependent: :destroy
+   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  validates :email, presence: true, length: { maximum: 255 },
+                    format: { with: VALID_EMAIL_REGEX },
+                    uniqueness: { case_sensitive: false }
+  before_save { self.email = email.downcase }                  
   
   def set_default_role
     self.role ||= :user
@@ -33,6 +38,17 @@ class User < ApplicationRecord
         end
       end
     end
+  end
+
+  def testing(arr)  
+      sub_ary = arr.uniq
+      main_ary = []
+      sub_ary.each do |el|
+        element =  arr.max_by { |i| arr.count(i) }
+        main_ary.push(element)
+        arr.delete(element)
+      end
+      main_ary
   end
   
 end

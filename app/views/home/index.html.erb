@@ -23,9 +23,9 @@
 }
 }
  </style>
- <h2>Pizzas</h2>
  <div class="col-md-8">
   <div class="row text-center">
+     <h2>Vegan Pizzas</h2>
     <% @v_pizzas.each do |pizza| %>
     <div class="col-sm-4">
       <div class="thumbnail1">
@@ -42,6 +42,58 @@
     </div>
 
       <%end%>
+    <h2>Sides</h2>
+    <% @sides.each do |pizza| %>
+    <div class="col-sm-4">
+      <div class="thumbnail1">
+        <img src="<%= pizza.picture.try(:image).present? ? pizza.picture.image.url(:medium) : '/assets/pizza1' %>" width="220" height="220">
+        <p><strong><%= pizza.name.titleize %></strong></p>
+        <p>
+          <% pizza.item_dimensions.each do |item_dimension|%>
+            <p><input class ="item_dimension_check" name="item_dimension" type="radio" value="<%= item_dimension.id %>" item-id="<%= pizza.id %>" />&nbsp;<%=item_dimension.dimension.size %>
+            <%=number_to_currency(item_dimension.price, unit: "\u20B9", separator: ",", delimiter: "") %>(Serve <%= item_dimension.dimension.serve %>)</p>
+          <%end%>
+        </p>
+        <p><button class="btn btn-danger add_to_cart disabled" item-id = "<%= pizza.id %>" >Add to Cart</button>
+      </div>
+    </div>
+
+      <%end%>
+          <h2>Salads</h2>
+    <% @salads.each do |pizza| %>
+    <div class="col-sm-4">
+      <div class="thumbnail1">
+        <img src="<%= pizza.picture.try(:image).present? ? pizza.picture.image.url(:medium) : '/assets/pizza1' %>" width="220" height="220">
+        <p><strong><%= pizza.name.titleize %></strong></p>
+        <p>
+          <% pizza.item_dimensions.each do |item_dimension|%>
+            <p><input class ="item_dimension_check" name="item_dimension" type="radio" value="<%= item_dimension.id %>" item-id="<%= pizza.id %>" />&nbsp;<%=item_dimension.dimension.size %>
+            <%=number_to_currency(item_dimension.price, unit: "\u20B9", separator: ",", delimiter: "") %>(Serve <%= item_dimension.dimension.serve %>)</p>
+          <%end%>
+        </p>
+        <p><button class="btn btn-danger add_to_cart disabled" item-id = "<%= pizza.id %>" >Add to Cart</button>
+      </div>
+    </div>
+
+      <%end%>
+          <h2>Drinks</h2>
+    <% @drinks.each do |pizza| %>
+    <div class="col-sm-4">
+      <div class="thumbnail1">
+        <img src="<%= pizza.picture.try(:image).present? ? pizza.picture.image.url(:medium) : '/assets/pizza1' %>" width="220" height="220">
+        <p><strong><%= pizza.name.titleize %></strong></p>
+        <p>
+          <% pizza.item_dimensions.each do |item_dimension|%>
+            <p><input class ="item_dimension_check" name="item_dimension" type="radio" value="<%= item_dimension.id %>" item-id="<%= pizza.id %>" />&nbsp;<%=item_dimension.dimension.size %>
+            <%=number_to_currency(item_dimension.price, unit: "\u20B9", separator: ",", delimiter: "") %>(Serve <%= item_dimension.dimension.serve %>)</p>
+          <%end%>
+        </p>
+        <p><button class="btn btn-danger add_to_cart disabled" item-id = "<%= pizza.id %>" >Add to Cart</button>
+      </div>
+    </div>
+
+      <%end%>
+    <h2>Meat  Pizzas</h2>
     <% @nv_pizzas.each do |pizza| %>
     <div class="col-sm-4">
       <div class="thumbnail1">

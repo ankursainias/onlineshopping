@@ -52,8 +52,4 @@ class Deal < ApplicationRecord
  			BigDecimal("#{input_amount}") * (BigDecimal("#{amount}") / 100)
  	end
 
- 	def amount_based(subtotal)
- 		
- 	end
-
 end

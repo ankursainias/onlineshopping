@@ -48,7 +48,10 @@ class HomeController < ApplicationController
   end
   def index
   	@v_pizzas = Item.veg_pizzas
-  	@nv_pizzas = Item.non_veg_pizzas
+    @nv_pizzas = Item.non_veg_pizzas
+    @salads = Item.salads
+    @sides = Item.sides
+  	@drinks = Item.drinks
   	if user_signed_in?
   		@cart = Cart.find_by(user_id: current_user.id, purchased: false)
  	else

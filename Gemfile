@@ -32,6 +32,8 @@ gem 'geokit', '~> 1.13', '>= 1.13.1'
 
 gem 'concurrency'
 
+gem 'maily'
+
 gem 'sunspot_rails'
 gem 'sunspot_solr' # optional pre-packaged Solr distribution for use in development. Please find a section below explaining other options for running Solr in production
 gem 'progress_bar', '~> 1.0', '>= 1.0.5'
@@ -86,7 +88,7 @@ gem 'unicorn'
 gem 'capistrano', '~> 3.7', '>= 3.7.1'
 gem 'capistrano-rails', '~> 1.2'
 gem 'capistrano-passenger', '~> 0.2.0'
-
+gem "passenger", ">= 5.0.25", require: "phusion_passenger/rack_handler"
 # Add this if you're using rbenv
 # gem 'capistrano-rbenv', '~> 2.1'
 

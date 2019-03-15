@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <%= stylesheet_link_tag    "maily/application", :media => "all" %>
+  <%= javascript_include_tag "maily/application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <%= render 'maily/shared/header' %>
+
+  <div class="wrap_content clearfix">
+    <%= render 'maily/shared/sidebar' %>
+
+    <div class="content">
+      <%= render 'maily/shared/flash_messages' %>
+
+      <%= yield %>
+    </div>
+  </div>
+
+  <%= render 'maily/shared/footer' %>
+</body>
+</html>

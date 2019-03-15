@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_25_124744) do
+ActiveRecord::Schema.define(version: 2019_03_12_055849) do
 
   create_table "brand_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "brand_id"
-    t.integer "category_id"
+    t.bigint "brand_id"
+    t.bigint "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["brand_id"], name: "index_brand_categories_on_brand_id"
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 2019_01_25_124744) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.string "fingerprint"
     t.index ["user_id"], name: "index_cards_on_user_id"
   end
 
@@ -49,6 +50,8 @@ ActiveRecord::Schema.define(version: 2019_01_25_124744) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "item_dimension_id"
+    t.text "less_ingredient_ids"
+    t.text "topping_ids"
     t.index ["cart_id"], name: "index_cart_items_on_cart_id"
     t.index ["item_dimension_id"], name: "index_cart_items_on_item_dimension_id"
     t.index ["item_id"], name: "index_cart_items_on_item_id"
@@ -68,6 +71,17 @@ ActiveRecord::Schema.define(version: 2019_01_25_124744) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "parent_id"
+  end
+
+  create_table "category_ingredients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "category_id"
+    t.bigint "ingredient_id"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_category_ingredients_on_category_id"
+    t.index ["ingredient_id"], name: "index_category_ingredients_on_ingredient_id"
   end
 
   create_table "coupon_redemptions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -93,6 +107,28 @@ ActiveRecord::Schema.define(version: 2019_01_25_124744) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "attachments"
+  end
+
+  create_table "deal_items", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.bigint "deal_id"
+    t.bigint "item_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deal_id"], name: "index_deal_items_on_deal_id"
+    t.index ["item_id"], name: "index_deal_items_on_item_id"
+  end
+
+  create_table "deals", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.bigint "price_id"
+    t.string "name"
+    t.float "amount", default: 0.0
+    t.string "image"
+    t.datetime "initial_time"
+    t.datetime "end_time"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["price_id"], name: "index_deals_on_price_id"
   end
 
   create_table "delivery_addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -128,8 +164,8 @@ ActiveRecord::Schema.define(version: 2019_01_25_124744) do
   end
 
   create_table "item_dimensions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "item_id"
-    t.integer "dimension_id"
+    t.bigint "item_id"
+    t.bigint "dimension_id"
     t.float "price", default: 0.0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -176,9 +212,11 @@ ActiveRecord::Schema.define(version: 2019_01_25_124744) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "delivery_address_id"
+    t.bigint "store_id"
     t.index ["cart_id"], name: "index_orders_on_cart_id"
     t.index ["delivery_address_id"], name: "index_orders_on_delivery_address_id"
     t.index ["order_status_id"], name: "index_orders_on_order_status_id"
+    t.index ["store_id"], name: "index_orders_on_store_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -198,6 +236,7 @@ ActiveRecord::Schema.define(version: 2019_01_25_124744) do
     t.string "currency", default: "INR"
     t.string "payer_id"
     t.string "token"
+    t.boolean "completed", default: false
     t.index ["card_id"], name: "index_payments_on_card_id"
     t.index ["order_id"], name: "index_payments_on_order_id"
   end
@@ -212,6 +251,14 @@ ActiveRecord::Schema.define(version: 2019_01_25_124744) do
     t.integer "image_file_size"
     t.datetime "image_updated_at"
     t.index ["imageable_type", "imageable_id"], name: "index_pictures_on_imageable_type_and_imageable_id"
+  end
+
+  create_table "prices", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.string "title"
+    t.string "p_type"
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "store_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -261,17 +308,27 @@ ActiveRecord::Schema.define(version: 2019_01_25_124744) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "brand_categories", "brands"
+  add_foreign_key "brand_categories", "categories"
   add_foreign_key "cards", "users"
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "item_dimensions"
   add_foreign_key "cart_items", "items"
   add_foreign_key "cart_items", "users"
   add_foreign_key "carts", "users"
+  add_foreign_key "category_ingredients", "categories"
+  add_foreign_key "category_ingredients", "ingredients"
+  add_foreign_key "deal_items", "deals"
+  add_foreign_key "deal_items", "items"
+  add_foreign_key "deals", "prices"
   add_foreign_key "delivery_addresses", "users"
+  add_foreign_key "item_dimensions", "dimensions"
+  add_foreign_key "item_dimensions", "items"
   add_foreign_key "open_hours", "stores"
   add_foreign_key "orders", "carts"
   add_foreign_key "orders", "delivery_addresses"
   add_foreign_key "orders", "order_statuses"
+  add_foreign_key "orders", "stores"
   add_foreign_key "orders", "users"
   add_foreign_key "payments", "cards"
   add_foreign_key "payments", "orders"

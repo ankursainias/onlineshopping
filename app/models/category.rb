@@ -4,5 +4,6 @@ class Category < ApplicationRecord
 	has_many :category_ingredients, dependent: :destroy
 	has_many :ingredients, through: :category_ingredients
  	has_many :childs, class_name: "Category", foreign_key: "parent_id"	
-  belongs_to :parent, class_name: "Category"
+  	belongs_to :parent, class_name: "Category"
+  	default_scope { order(id: :asc).limit(5) }
 end

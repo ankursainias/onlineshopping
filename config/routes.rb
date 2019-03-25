@@ -77,6 +77,7 @@ Rails.application.routes.draw do
       get 'testing'
       get 'paypal_return'
       post 'paypal_notify'
+      get 'testing2'
     end
    end
   get 'home/index'

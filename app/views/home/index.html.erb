@@ -154,6 +154,7 @@
 
     $(document).on('click','.delete_btn',function(){
       var cart_item_id = $(this).attr("cart-item-id");
+       $('.parent-loader').addClass('loading');
       $.ajax({
           url: "/home/delete_cart_item",
           method: "DELETE",
@@ -172,6 +173,7 @@
       var item_id = $(this).attr("item-id");
       var check_val = $('input[name=item_dimension]:checked').val();
       // var check_val = $(this).attr("item-id");
+       $('.parent-loader').addClass('loading');
        $.ajax({
           url: "/home/add_to_cart",
           method: "POST",

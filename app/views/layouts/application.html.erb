@@ -13,6 +13,8 @@
   </head>
 
   <body>
+    <div class="parent-loader">
+    </div>
       <% if user_signed_in? %>
       <%= render 'layouts/partials/header' if current_user.admin?%>
        <%= link_to('Logout', destroy_user_session_path, method: :delete) unless  current_user.admin? %>  
@@ -37,6 +39,15 @@
     background-color: var(--back-color); 
   }
 </style>
+<script type="text/javascript">
+  $(window).load(function(){
+    $('.parent-loader').removeClass('loading');
+  });
+  $(window).ready(function(){
+    $('.parent-loader').addClass('loading');
+  });
+
+</script>
 <!-- <script type="text/javascript">
   $(document).ready(function (){
   Command: toastr["success"]("Have fun storming the castle!")

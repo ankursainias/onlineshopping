@@ -21,7 +21,7 @@
     </div>
   </div>
   <div class="form-group">
-    <%= f.label :address, class: 'control-label col-md-2' %>
+    <%= f.label :address, class: 'control-label col-md-2', :input_html =>{:id => 'gmaps-input-address'} %>
     <div class="col-md-10">
       <%= f.text_field :address, class: 'form-control' %>
       <%= f.hidden_field :lat, value: "" %>

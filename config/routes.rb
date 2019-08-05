@@ -1,6 +1,9 @@
 require 'constraints/web_constraint'
 require 'constraints/api_constraint'
 Rails.application.routes.draw do
+  resources :pays
+  resources :testings
+  resources :articles
   mount Maily::Engine, at: '/maily'
   # API routes 
   namespace :api, defaults: { format: :json } do

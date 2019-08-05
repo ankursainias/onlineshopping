@@ -2,6 +2,7 @@
   "name": "OnlineShopping",
   "private": true,
   "dependencies": {
+    "actiontext": "https://github.com/kobaltz/actiontext",
     "toastr": "^2.1.4"
   }
 }

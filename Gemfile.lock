@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/kobaltz/actiontext.git
+  revision: ef59c4ba99d1b7614dd47f5a294eef553224db88
+  branch: archive
+  specs:
+    actiontext (0.1.0)
+      nokogiri
+      rails (>= 5.2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -44,8 +53,6 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
-    airbrussh (1.3.1)
-      sshkit (>= 1.6.1, != 1.7.0)
     archive-zip (0.11.0)
       io-like (~> 0.3.0)
     arel (9.0.0)
@@ -60,18 +67,6 @@ GEM
       sassc (>= 2.0.0)
     builder (3.2.3)
     byebug (10.0.2)
-    capistrano (3.11.0)
-      airbrussh (>= 1.0.0)
-      i18n
-      rake (>= 10.0.0)
-      sshkit (>= 1.9.0)
-    capistrano-bundler (1.5.0)
-      capistrano (~> 3.1)
-    capistrano-passenger (0.2.0)
-      capistrano (~> 3.0)
-    capistrano-rails (1.4.0)
-      capistrano (~> 3.1)
-      capistrano-bundler (~> 1.1)
     capybara (3.13.2)
       addressable
       mini_mime (>= 0.1.3)
@@ -122,6 +117,9 @@ GEM
     highline (2.0.1)
     i18n (1.5.3)
       concurrent-ruby (~> 1.0)
+    image_processing (1.9.0)
+      mini_magick (>= 4.9.3, < 5)
+      ruby-vips (>= 2.0.13, < 3)
     io-like (0.3.0)
     jbuilder (2.8.0)
       activesupport (>= 4.2.0)
@@ -150,6 +148,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2018.0812)
     mimemagic (0.3.3)
+    mini_magick (4.9.3)
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
@@ -159,9 +158,6 @@ GEM
     mysql2 (0.5.2)
     net-http-persistent (3.0.0)
       connection_pool (~> 2.2)
-    net-scp (1.2.1)
-      net-ssh (>= 2.6.5)
-    net-ssh (5.1.0)
     nio4r (2.3.1)
     nokogiri (1.10.1)
       mini_portile2 (~> 2.4.0)
@@ -174,9 +170,6 @@ GEM
       mime-types
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
-    passenger (6.0.2)
-      rack
-      rake (>= 0.8.1)
     paypal-sdk-rest (1.7.3)
       multi_json (~> 1.0)
       xml-simple
@@ -229,6 +222,8 @@ GEM
     rsolr (2.2.1)
       builder (>= 2.1.2)
       faraday (>= 0.9.0)
+    ruby-vips (2.0.13)
+      ffi (~> 1.9)
     ruby_dep (1.5.0)
     rubyzip (1.2.2)
     sass (3.7.3)
@@ -264,9 +259,6 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    sshkit (1.18.1)
-      net-scp (>= 1.1.2)
-      net-ssh (>= 2.8.0)
     stripe (4.7.0)
       faraday (~> 0.13)
       net-http-persistent (~> 3.0)
@@ -313,12 +305,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  actiontext!
   bootsnap (>= 1.1.0)
   bootstrap-sass (~> 3.4.0)
   byebug
-  capistrano (~> 3.7, >= 3.7.1)
-  capistrano-passenger (~> 0.2.0)
-  capistrano-rails (~> 1.2)
   capybara (>= 2.15)
   chromedriver-helper
   coffee-rails (~> 4.2)
@@ -328,6 +318,7 @@ DEPENDENCIES
   font-awesome-rails
   geokit (~> 1.13, >= 1.13.1)
   geokit-rails
+  image_processing
   jbuilder (~> 2.5)
   jquery-rails
   listen (>= 3.0.5, < 3.2)
@@ -335,7 +326,6 @@ DEPENDENCIES
   mysql2
   oj
   paperclip (~> 6.0.0)
-  passenger (>= 5.0.25)
   paypal-sdk-rest
   progress_bar (~> 1.0, >= 1.0.5)
   puma (~> 3.11)

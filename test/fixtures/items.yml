@@ -2,8 +2,8 @@
 
 one:
   name: MyString
-  veg: false
+  category: true
 
 two:
   name: MyString
-  veg: false
+  category: true

@@ -1,0 +1,45 @@
+<!-- <p id="notice"><%= notice %></p>
+
+<%#= link_to 'Back', pays_path %>
+ -->
+ <%debugger%>
+
+ <input id="cardholder-name" type="text">
+<!-- placeholder for Elements -->
+<div id="card-element"></div>
+<button id="card-button" data-secret="<%= @client_secret %>">Submit Payment</button>
+
+
+<script src="https://js.stripe.com/v3/"></script>
+
+
+<script type="text/javascript">
+	var stripe = Stripe('pk_test_Z1KAgkvzZikH8VQJd5QDOr9I');
+
+	var elements = stripe.elements();
+	var cardElement = elements.create('card');
+	cardElement.mount('#card-element');
+</script>
+
+
+<script type="text/javascript">
+	var cardholderName = document.getElementById('cardholder-name');
+var cardButton = document.getElementById('card-button');
+var clientSecret = cardButton.dataset.secret;
+
+cardButton.addEventListener('click', function(ev) {
+  stripe.handleCardPayment(
+    clientSecret, cardElement, {
+      payment_method_data: {
+        billing_details: {name: cardholderName.value}
+      }
+    }
+  ).then(function(result) {
+    if (result.error) {
+      // Display error.message in your UI.
+    } else {
+      // The payment has succeeded. Display a success message.
+    }
+  });
+});
+</script>

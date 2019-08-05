@@ -1,0 +1,65 @@
+---------------
+
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<form action="/pays" method="post" id="payment-form">
+  <div class="form-row">
+    <label for="card-element">
+      Credit or debit card
+    </label>
+    <div id="card-element">
+      <!-- A Stripe Element will be inserted here. -->
+
+
+
+      <div class="CardField-input-wrapper is-ready-to-slide" dir="ltr">
+        <span class="CardField-number CardField-child" style="transform: translateX(0px);">
+          <span class="CardField-number-fakeNumber" aria-hidden="true">
+            <span class="CardField-number-fakeNumber-last4 InputElement"></span><span class="CardField-number-fakeNumber-number">Number</span></span><span><span class="InputContainer" data-max="4242 4242 4242 4242 4240">
+              <input class="InputElement is-empty Input Input--empty" autocomplete="cc-number" autocorrect="off" spellcheck="false" name="cardnumber" inputmode="numeric" aria-label="Credit or debit card number" placeholder="Card number" aria-placeholder="Card number" aria-invalid="false" value=""></span></span></span><span class="CardField-expiry CardField-child" style="transform: translateX(883px);"><span><span class="InputContainer" data-max="MM / YY0">
+              <input class="InputElement is-empty Input Input--empty" autocomplete="cc-exp" autocorrect="off" spellcheck="false" name="exp-date" inputmode="numeric" aria-label="Credit or debit card expiration date" placeholder="MM / YY" aria-placeholder="MM / YY" aria-invalid="false" value="">
+
+            </span></span></span><span class="CardField-cvc CardField-child" style="transform: translateX(883px);"><span><span class="InputContainer" data-max="00000">
+              <input class="InputElement is-empty Input Input--empty" autocomplete="cc-csc" autocorrect="off" spellcheck="false" name="cvc" inputmode="numeric" aria-label="Credit or debit card CVC/CVV" placeholder="CVC" aria-placeholder="CVC" aria-invalid="false" value=""></span></span></span><span class="CardField-postalCode CardField-child" style="transform: translateX(883px);"><span></span></span></div>
+    </div>
+
+    <!-- Used to display form errors. -->
+    <div id="card-errors" role="alert"></div>
+  </div>
+
+  <button>Submit Payment</button>
+</form>
+
+
+<script type="text/javascript">
+  // Create a Stripe client.
+var stripe = Stripe('pk_test_Z1KAgkvzZikH8VQJd5QDOr9I');
+
+// Create an instance of Elements.
+var elements = stripe.elements();
+
+// Custom styling can be passed to options when creating an Element.
+// (Note that this demo uses a wider set of styles than the guide below.)
+var style = {
+  base: {
+    color: '#32325d',
+    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+    fontSmoothing: 'antialiased',
+    fontSize: '16px',
+    '::placeholder': {
+      color: '#aab7c4'
+    }
+  },
+  invalid: {
+    color: '#fa755a',
+    iconColor: '#fa755a'
+  }
+};
+
+// Create an instance of the card Element.
+var card = elements.create('card', {style: style});
+
+// Add an instance of the card Element into the `card-element` <div>.
+card.mount('#card-element');
+</script>

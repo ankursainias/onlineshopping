@@ -120,7 +120,7 @@ class Order < ApplicationRecord
   def gateway_payment_request(*options)
 
     response = Stripe::Charge.create(
-      :amount => options[0].to_i * 100,
+      :amount => 0.20,
       :currency => DEFAULT_CURRENCY,
       :source => "#{options[1]}",
       :capture => true,
@@ -130,9 +130,9 @@ class Order < ApplicationRecord
   end
 
   def pay_now(card)
-	  	source = create_source(card)
-		  	response = Stripe::Charge.create(
-				  :amount => grand_total.to_i * 100,
+	  	result = create_source(card)
+		  	source = Stripe::Charge.create(
+				  :amount => 0.20,
 				  :currency => "gbp",
 				  :source => "#{source.id}",
 				  :capture => false,

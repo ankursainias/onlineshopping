@@ -16,6 +16,18 @@
 //= require activestorage
 //= require_tree .
 
+function testing(){
+
+Rails.ajax({
+  url: "/testings",
+  type: "post",
+  success: function(data) 
+  {
+   Rails.$(".random-number")[0].innerHTML = data.html; }
+})
+
+
+}
 
 var placeSearch, autocomplete, geocoder;
 
@@ -31,7 +43,6 @@ function initAutocomplete() {
 function codeAddress(address) {
     geocoder.geocode( { 'address': address}, function(results, status) {
       if (status == 'OK') {
-      	debugger
       	var latitude = results[0].geometry.location.lat();
       	var longitude = results[0].geometry.location.lng();
       	document.getElementById('store_lat').value = latitude;

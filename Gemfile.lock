@@ -179,7 +179,7 @@ GEM
       highline (>= 1.6, < 3)
       options (~> 2.3.0)
     public_suffix (3.0.3)
-    puma (3.12.0)
+    puma (3.12.4)
     rabl (0.14.0)
       activesupport (>= 2.3.14)
     rack (2.0.6)
@@ -330,7 +330,7 @@ DEPENDENCIES
   paperclip (~> 6.0.0)
   paypal-sdk-rest
   progress_bar (~> 1.0, >= 1.0.5)
-  puma (~> 3.11)
+  puma (~> 3.12)
   rabl
   rails (~> 5.2.2)
   rails-admin-scaffold
